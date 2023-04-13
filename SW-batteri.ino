@@ -1,14 +1,7 @@
 #include <Arduino.h>
 #include <Serial.h>
 
-uint8_t batteryLevel=100;
-
-String success;
-
-typedef struct struct_message
-{
-    uint8_t batteryLevel;
-} struct_message;
+uint8_t batteryLevel = 100;
 
 void setup() 
 {

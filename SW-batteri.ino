@@ -11,15 +11,22 @@ void setup()
 
 void loop() 
 {
-    getReadings();
+    calculateBatteryLevel();
 }
-void setBatteryLevel() {
+
+void MQTTsetup()
+{
+    client.setServer(mqtt_server, 1883);
+    client.setCallback(callback);
+}
+
+void calculateBatteryLevel() {
     uint8_t motorSpeed;
     uint8_t speedFactor = 0.1;
     while (Serial2.available() > 0) 
     {
         motorSpeed = Serial2.read();
     }
-    //Calculate battery usage based on motor speed and e=1/2*mv^2
-    batteryLevel -= (motorSpeed * speedFactor)^2 * 0.5;
+    //P=mv
+    batteryLevel -= motorSpeed * speedFactor;
 }

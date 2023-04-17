@@ -21,6 +21,46 @@ PubSubClient client(espClient);
 unsigned long lastMsg = 0;
 char msg[50];
 
+class BankAccount {
+    private:
+        int balance;
+    public:
+        BankAccount() { 
+            client.publish("zumo/bank/getBalance", "1337"); //request the balance from the server with pin 1337
+            balance = 0;
+        }
+        void transfer(int amount, char* toAccount) {
+            if (balance >= amount) {
+                char tempString[50];
+                itoa(amount, tempString, 10);
+                strcat(tempString, "1337"); //Append pin to the string
+                if (toAccount == "charger") {
+                    client.publish("zumo/bank/transfer/charger", tempString);
+                }
+                else {
+                    Serial.println("Account not in local database");
+                }
+                this->requestServerBalance();
+            }
+            else {
+                Serial.println("Not enough money");
+            }
+        }
+        void withdraw(int amount) {
+            balance -= amount;
+        }
+        int getBalance() {
+            return balance;
+        }
+        void updateLocalBalance(int amount) {
+            balance = amount;
+        }
+        void requestServerBalance() {
+            client.publish("zumo/bank/getBalance", "1337");
+        }
+};
+BankAccount account;
+
 void setup() 
 {
     Serial.begin(115200);
@@ -71,8 +111,7 @@ void callback(char* topic, byte* message, unsigned int length)
 
     // If a message is received on the topic esp32/output, you check if the message is either "on" or "off". 
     // Changes the output state according to the message
-    if (String(topic) == "esp32/output") 
-    {
+    if (String(topic) == "esp32/output") {
         Serial.print("Changing output to ");
         if (messageTemp == "on") 
         {
@@ -85,7 +124,19 @@ void callback(char* topic, byte* message, unsigned int length)
             digitalWrite(BUILTIN_LED, LOW);
         }
     }
+    else if (String(topic) == "zumo/bank/currentBalance") {
+        Serial.print("Current balance: ");
+        Serial.println (messageTemp);
+        int currentBalance = messageTemp.toInt();
+        account.updateLocalBalance(currentBalance);
+    }
+    else if (String(topic) == "zumo/bank/error") {
+        Serial-print("Error: ");
+        Serial.println(messageTemp);
+    }
 }
+
+
 
 void reconnect() 
 {
@@ -110,6 +161,8 @@ void reconnect()
         }
     }
 }
+
+
 
 void loop() 
 {

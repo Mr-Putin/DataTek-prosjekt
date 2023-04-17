@@ -131,12 +131,10 @@ void callback(char* topic, byte* message, unsigned int length)
         account.updateLocalBalance(currentBalance);
     }
     else if (String(topic) == "zumo/bank/error") {
-        Serial-print("Error: ");
+        Serial.print("Error: ");
         Serial.println(messageTemp);
     }
 }
-
-
 
 void reconnect() 
 {
@@ -161,8 +159,6 @@ void reconnect()
         }
     }
 }
-
-
 
 void loop() 
 {

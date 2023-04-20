@@ -1,20 +1,18 @@
-#include <Arduino.h>
-#include <Serial.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
 
-const int BUILTIN_LED = 4;
+const int BUILTIN_LED = 32;
 
 float batteryLevel = 100.0;
 int motorSpeed = 50;
 unsigned long batteryTimer = 0;
 
 //Network information
-const char* ssid = "*********";
-const char* password = "*********";
+const char* ssid = "RED_VELVET 4802";
+const char* password = "03175B|j";
 
 //MQTT Broker IP address
-const char* mqtt_server = "192.168.10.154";
+const char* mqtt_server = "84.52.229.122";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -23,11 +21,10 @@ char msg[50];
 
 class BankAccount {
     private:
-        int balance;
+        int balance = 0;
     public:
         BankAccount() { 
             client.publish("zumo/bank/getBalance", "1337"); //request the balance from the server with pin 1337
-            balance = 0;
         }
         void transfer(int amount, char* toAccount) {
             if (balance >= amount) {
@@ -60,18 +57,6 @@ class BankAccount {
         }
 };
 BankAccount account;
-
-void setup() 
-{
-    Serial.begin(115200);
-    Serial2.begin(9600); //Start serial communication with Zumo
-
-    setup_wifi();
-    client.setServer(mqtt_server, 1882);
-    client.setCallback(callback);
-
-    pinMode(BUILTIN_LED, OUTPUT);
-}
 
 void setup_wifi() 
 {
@@ -124,13 +109,13 @@ void callback(char* topic, byte* message, unsigned int length)
             digitalWrite(BUILTIN_LED, LOW);
         }
     }
-    else if (String(topic) == "zumo/bank/currentBalance") {
+    if (String(topic) == "zumo/bank/currentBalance") {
         Serial.print("Current balance: ");
         Serial.println (messageTemp);
         int currentBalance = messageTemp.toInt();
         account.updateLocalBalance(currentBalance);
     }
-    else if (String(topic) == "zumo/bank/error") {
+    if (String(topic) == "zumo/bank/error") {
         Serial.print("Error: ");
         Serial.println(messageTemp);
     }
@@ -148,6 +133,8 @@ void reconnect()
             Serial.println("connected");
             // Subscribe or resubscribe to a topic
             client.subscribe("esp32/output");
+            client.subscribe("zumo/bank/currentBalance");
+            client.subscribe("zumo/bank/error");            
         } 
         else 
         {
@@ -158,6 +145,37 @@ void reconnect()
             delay(5000);
         }
     }
+}
+
+void calculateBatteryLevel() {
+    float speedFactor = 0.01;
+    while (Serial2.available() > 0) 
+    {
+        motorSpeed = Serial2.parseInt();
+    }
+    unsigned long now = millis();
+    if (now - batteryTimer > 1000) 
+    {
+        batteryTimer = now;
+        batteryLevel -= motorSpeed * speedFactor; //P=mv
+    }
+    if (batteryLevel < 0) 
+    {
+        batteryLevel = 0;
+        //TODO: Send message to zumo to stop
+    }
+}
+
+void setup() 
+{
+    Serial.begin(115200);
+    Serial2.begin(9600); //Start serial communication with Zumo
+
+    setup_wifi();
+    client.setServer(mqtt_server, 1883);
+    client.setCallback(callback);
+
+    pinMode(BUILTIN_LED, OUTPUT);
 }
 
 void loop() 
@@ -182,24 +200,7 @@ void loop()
         char tempString2[6];
         dtostrf(batteryLevel, 1, 2, tempString2);
         client.publish("zumo/battery", tempString2);
-    }
-}
-
-void calculateBatteryLevel() {
-    float speedFactor = 0.1;
-    while (Serial2.available() > 0) 
-    {
-        motorSpeed = Serial2.parseInt();
-    }
-    unsigned long now = millis();
-    if (now - batteryTimer > 1000) 
-    {
-        batteryTimer = now;
-        batteryLevel -= motorSpeed * speedFactor; //P=mv
-    }
-    if (batteryLevel < 0) 
-    {
-        batteryLevel = 0;
-        //TODO: Send message to zumo to stop
+    
+        Serial.println(account.getBalance());
     }
 }

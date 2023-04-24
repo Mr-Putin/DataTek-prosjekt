@@ -1,7 +1,9 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
+#include <EEPROM.h>
 
-const int BUILTIN_LED = 4;
+#define BUILTIN_LED 4
+#define EEPROM_SIZE 4
 
 float batteryLevel = 100.0;
 int motorSpeed = 50;
@@ -31,50 +33,50 @@ private:
 public:
     void transfer(int amount, char *toAccount)
     {
-        if (balance >= amount)
+        if (balance >= amount) // Sjekker om det er nok penger på kontoen
         {
             bool inArray = false;
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++) // Sjekker om kontoen som skal overføres til er i arrayen
             {
                 if (accounts[i] == toAccount)
                 {
-                    inArray = true;
+                    inArray = true; 
                     break;
                 }
             }
             if (inArray)
             {
-                char payload[50];
-                itoa(amount, payload, 10);
+                char payload[50]; 
+                itoa(amount, payload, 10); // Konverterer amount til char array
                 strcat(payload, pin); // Legger pin på slutten av payloaden
 
-                strcpy(topic, fromAccount);
-                strcat(topic, "/bank/transfer/");
-                strcat(topic, toAccount);
-                client.publish(topic, payload);
+                strcpy(topic, fromAccount); // Legger kontoen som skal overføre penger på topicen
+                strcat(topic, "/bank/transfer/"); 
+                strcat(topic, toAccount); // Legger kontoen som skal motta penger på topicen
+                client.publish(topic, payload); // Sender melding til serveren
             }
             else
             {
-                Serial.println("Account not in local database");
+                Serial.println("Account not in local database"); 
             }
-            requestServerBalance();
+            requestServerBalance(); // Forespør balanse fra server
         }
         else
         {
-            Serial.println("Not enough money");
+            Serial.println("Not enough money"); 
         }
     }
     int getBalance()
     {
-        return balance;
+        return balance; 
     }
     void updateLocalBalance(int amount)
     {
-        balance = amount;
+        balance = amount; // Oppdaterer balansen lokalt
     }
-    void requestServerBalance()
+    void requestServerBalance() // Forespør balanse fra server
     {
-        strcpy(topic, fromAccount);
+        strcpy(topic, fromAccount); 
         strcat(topic, "/bank/getBalance");
         client.publish(topic, pin);
     }
@@ -84,14 +86,14 @@ BankAccount account;
 void setup_wifi()
 {
     delay(10);
-    // We start by connecting to a WiFi network
+    // Starter med å koble til WiFi
     Serial.println();
     Serial.print("Connecting to ");
     Serial.println(ssid);
 
     WiFi.begin(ssid, password);
 
-    while (WiFi.status() != WL_CONNECTED)
+    while (WiFi.status() != WL_CONNECTED) // Venter på at WiFi skal koble til
     {
         delay(500);
         Serial.print(".");
@@ -100,10 +102,10 @@ void setup_wifi()
     Serial.println("");
     Serial.println("WiFi connected");
     Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
+    Serial.println(WiFi.localIP()); // Printer IP-adressen til ESP32
 }
 
-void callback(char *topic, byte *message, unsigned int length)
+void callback(char *topic, byte *message, unsigned int length) // Denne funksjonen kjøres når en melding mottas
 {
     Serial.print("Message arrived on topic: ");
     Serial.print(topic);
@@ -133,14 +135,14 @@ void callback(char *topic, byte *message, unsigned int length)
             digitalWrite(BUILTIN_LED, LOW);
         }
     }
-    if (String(topic) == "zumo/bank/currentBalance")
+    if (String(topic) == "zumo/bank/currentBalance") // Når balansen mottas fra serveren
     {
         Serial.print("Current balance: ");
         Serial.println(messageTemp);
         int currentBalance = messageTemp.toInt();
         account.updateLocalBalance(currentBalance);
     }
-    if (String(topic) == "zumo/bank/error")
+    if (String(topic) == "zumo/bank/error") // Når det er en feil fra serveren
     {
         Serial.print("Error: ");
         Serial.println(messageTemp);
@@ -173,18 +175,36 @@ void reconnect()
     }
 }
 
+void processSerial2() {
+    while (Serial2.available()) 
+    {   
+        String input = Serial2.readStringUntil('\n');
+        if (input == "help") {
+            Serial.println("Doing stuff to help");
+        }
+        else if (input == "test")
+        {
+            Serial.println("Doing stuff to test");
+        }
+        else 
+        {
+            motorSpeed = input.toInt();
+            Serial.print("Motor speed: ");
+            Serial.println(motorSpeed);
+        }
+    }
+}
+
 void calculateBatteryLevel()
 {
     float speedFactor = 0.01;
-    while (Serial2.available() > 0)
-    {
-        motorSpeed = Serial2.parseInt();
-    }
     unsigned long now = millis();
-    if (now - batteryTimer > 1000)
+    if (now - batteryTimer > 1000 && motorSpeed > 0)
     {
         batteryTimer = now;
         batteryLevel -= motorSpeed * speedFactor; // P=mv
+        EEPROM.write(0, batteryLevel); // Lagrer batterinivået i EEPROM
+        EEPROM.commit();
     }
     if (batteryLevel < 0)
     {
@@ -196,7 +216,9 @@ void calculateBatteryLevel()
 void setup()
 {
     Serial.begin(115200);
-    Serial2.begin(9600); // Start serial communication with Zumo
+    Serial2.begin(9600); // Start seriell kommunikasjon med Zumo
+    EEPROM.begin(EEPROM_SIZE); // Start EEPROM
+    batteryLevel = EEPROM.read(0); // Leser batterinivå fra EEPROM
 
     setup_wifi();
     client.setServer(mqtt_server, 1883);
@@ -210,6 +232,7 @@ void setup()
 void loop()
 {
     calculateBatteryLevel();
+    processSerial2();
 
     if (!client.connected())
     {
@@ -229,6 +252,7 @@ void loop()
         char tempString2[6];
         dtostrf(batteryLevel, 1, 2, tempString2);
         client.publish("zumo/battery", tempString2);
-        Serial.println(account.getBalance());
+        // Serial.println(account.getBalance());
+        
     }
 }

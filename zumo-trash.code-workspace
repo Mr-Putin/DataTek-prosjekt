@@ -4,8 +4,8 @@
 			"path": "."
 		},
 		{
-			"name": "SW-Batteri",
-			"path": "../../PlatformIO/Projects/SW-Batteri"
+			"name": "Zumo linjefolging",
+			"path": "Linjefølging/Zumo linjefolging"
 		}
 	],
 	"settings": {}

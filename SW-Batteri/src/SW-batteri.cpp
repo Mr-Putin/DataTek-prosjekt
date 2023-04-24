@@ -2,24 +2,32 @@
 #include <PubSubClient.h>
 #include <EEPROM.h>
 
+// Pinout
 #define BUILTIN_LED 4
+
+// EEPROM størrelse allokasjon 512 bytes er tilgjengelig på ESP32
 #define EEPROM_SIZE 4
 
+// Globale variabler
 float batteryLevel = 100.0;
 int motorSpeed = 50;
 unsigned long batteryTimer = 0;
+int state = 0;
 
-// Network information
+// Setter opp timer og meldingsvariabler
+unsigned long lastMsg = 0;
+char msg[50];
+
+// Nettverksinformasjon
 const char *ssid = "RED_VELVET 4802";
 const char *password = "03175B|j";
 
-// MQTT Broker IP address
+// MQTT Server IP-adresse
 const char *mqtt_server = "84.52.229.122";
 
+// Setter opp WiFiClient
 WiFiClient espClient;
 PubSubClient client(espClient);
-unsigned long lastMsg = 0;
-char msg[50];
 
 class BankAccount
 {
@@ -86,6 +94,7 @@ BankAccount account;
 void setup_wifi()
 {
     delay(10);
+
     // Starter med å koble til WiFi
     Serial.println();
     Serial.print("Connecting to ");
@@ -93,19 +102,22 @@ void setup_wifi()
 
     WiFi.begin(ssid, password);
 
-    while (WiFi.status() != WL_CONNECTED) // Venter på at WiFi skal koble til
+    // Venter på at WiFi skal koble til
+    while (WiFi.status() != WL_CONNECTED) 
     {
         delay(500);
         Serial.print(".");
     }
 
+    // Når WiFi er koblet til
     Serial.println("");
     Serial.println("WiFi connected");
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP()); // Printer IP-adressen til ESP32
 }
 
-void callback(char *topic, byte *message, unsigned int length) // Denne funksjonen kjøres når en melding mottas
+// Denne funksjonen kjøres når en melding mottas
+void callback(char *topic, byte *message, unsigned int length) 
 {
     Serial.print("Message arrived on topic: ");
     Serial.print(topic);
@@ -119,8 +131,8 @@ void callback(char *topic, byte *message, unsigned int length) // Denne funksjon
     }
     Serial.println();
 
-    // If a message is received on the topic esp32/output, you check if the message is either "on" or "off".
-    // Changes the output state according to the message
+    // Hvis en melding mottas på topicen esp32/output, sjekker du om meldingen er enten "on" eller "off".
+    // Endrer output-staten i henhold til meldingen
     if (String(topic) == "esp32/output")
     {
         Serial.print("Changing output to ");
@@ -135,17 +147,48 @@ void callback(char *topic, byte *message, unsigned int length) // Denne funksjon
             digitalWrite(BUILTIN_LED, LOW);
         }
     }
-    if (String(topic) == "zumo/bank/currentBalance") // Når balansen mottas fra serveren
+
+    // Når balansen mottas fra serveren
+    if (String(topic) == "zumo/bank/currentBalance") 
     {
         Serial.print("Current balance: ");
         Serial.println(messageTemp);
         int currentBalance = messageTemp.toInt();
         account.updateLocalBalance(currentBalance);
     }
-    if (String(topic) == "zumo/bank/error") // Når det er en feil fra serveren
+
+    // Når det er en feil fra serveren
+    if (String(topic) == "zumo/bank/error") 
     {
         Serial.print("Error: ");
         Serial.println(messageTemp);
+    }
+    
+    // Når batterinivået mottas gjennom MQTT
+    if (String(topic) == "zumo/battery/level") 
+    {
+        Serial.print("Battery level: ");
+        Serial.println(messageTemp);
+        batteryLevel = messageTemp.toFloat();
+    }
+
+    // Når tilstand Zumo skal endres til mottas gjennom MQTT
+    if (String(topic) == "zumo/state") 
+    {
+        Serial1.print("change state");
+        Serial.println(messageTemp);
+        if (messageTemp == "charging")
+        {
+            state = charging;
+        }
+        else if (messageTemp == "toll")
+        {
+            state = toll;
+        }
+        else if (messageTemp == "idle")
+        {
+            state = idle;
+        }
     }
 }
 
@@ -159,10 +202,10 @@ void reconnect()
         if (client.connect("ESP32Client"))
         {
             Serial.println("connected");
-            // Subscribe or resubscribe to a topic
-            client.subscribe("esp32/output");
-            client.subscribe("zumo/bank/currentBalance");
-            client.subscribe("zumo/bank/error");
+          // Subscribe or resubscribe to a topic
+          client.subscribe("esp32/output");
+          client.subscribe("zumo/bank/currentBalance");
+          client.subscribe("zumo/bank/error");
         }
         else
         {
@@ -175,22 +218,33 @@ void reconnect()
     }
 }
 
-void processSerial2() {
+void processSerial2() 
+{
     while (Serial2.available()) 
     {   
         String input = Serial2.readStringUntil('\n');
-        if (input == "help") {
+        if (input == "") {
             Serial.println("Doing stuff to help");
         }
         else if (input == "test")
         {
             Serial.println("Doing stuff to test");
         }
+        
+        // Konverterer input til int
+        input = input.toInt();
         else 
         {
+            if (input > 0)
+            {
             motorSpeed = input.toInt();
             Serial.print("Motor speed: ");
             Serial.println(motorSpeed);
+            }
+            else
+            {
+                // TODO: Charge the battery;
+            }
         }
     }
 }
@@ -203,16 +257,43 @@ void calculateBatteryLevel()
     {
         batteryTimer = now;
         batteryLevel -= motorSpeed * speedFactor; // P=mv
-        EEPROM.write(0, batteryLevel); // Lagrer batterinivået i EEPROM
+
+        // Lagrer batterinivået i EEPROM
+        EEPROM.write(0, batteryLevel); 
         EEPROM.commit();
     }
-    if (batteryLevel < 0)
+    if (batteryLevel <= 40)
+    {
+        // Si fra til Zumo at batterinivået er lavt
+
+        // Eventuelt se etter ladestasjon her
+    }
+    if (batteryLevel <= 10)
+    {
+        // Si fra til Zumo at batterinivået er kritisk lavt
+    }
+    {
+        batteryLevel = 100;
+    }
+    else if (batteryLevel < 0)
     {
         batteryLevel = 0;
+    
         // TODO: Send message to zumo to stop
+        Serial2.println("Battery empty") //REPLACE MESSAGE LATER
+        Serial2.println("Battery empty") //REPLACE MESSAGE LATER
+
+        //death sound
+
     }
 }
 
+void changeZumoState()
+{
+    // Kjører ved mottatt melding fra MQTT-server 
+    // Sender melding over serial for å endre tilstand på Zumo
+
+}
 void setup()
 {
     Serial.begin(115200);
@@ -225,7 +306,12 @@ void setup()
     client.setCallback(callback);
 
     pinMode(BUILTIN_LED, OUTPUT);
+
+    // Koble til MQTT-server
     reconnect();    
+
+    // MQTT kode:
+    // Synkroniserer lokal konto med server
     account.requestServerBalance();
 }
 
@@ -252,7 +338,5 @@ void loop()
         char tempString2[6];
         dtostrf(batteryLevel, 1, 2, tempString2);
         client.publish("zumo/battery", tempString2);
-        // Serial.println(account.getBalance());
-        
     }
 }

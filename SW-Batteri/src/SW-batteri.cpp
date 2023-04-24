@@ -294,6 +294,7 @@ void changeZumoState()
     // Sender melding over serial for å endre tilstand på Zumo
 
 }
+
 void setup()
 {
     Serial.begin(115200);

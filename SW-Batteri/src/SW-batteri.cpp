@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include <ArduinoJson.h>
 #include <PubSubClient.h>
 #include <EEPROM.h>
 
@@ -9,10 +10,17 @@
 #define EEPROM_SIZE 4
 
 // Globale variabler
-float batteryLevel = 100.0;
 int motorSpeed = 50;
-unsigned long batteryTimer = 0;
 int state = 0;
+bool processSensorData = false;
+uint8_t sensorDataIndex = 0;
+uint8_t lastPercentage = 100;
+
+// Variabler for å holde styr på batteriet
+float batteryLevel = 100.0;
+unsigned long batteryTimer = 0;
+float batteryCapacity = 100.0;
+unsigned int batteryChargeCycles = 0;
 
 // Setter opp timer og meldingsvariabler
 unsigned long lastMsg = 0;
@@ -165,7 +173,7 @@ void callback(char *topic, byte *message, unsigned int length)
     }
     
     // Når batterinivået mottas gjennom MQTT
-    if (String(topic) == "zumo/battery/level") 
+    if (String(topic) == "zumo/battery/newLevel") 
     {
         Serial.print("Battery level: ");
         Serial.println(messageTemp);
@@ -179,15 +187,15 @@ void callback(char *topic, byte *message, unsigned int length)
         Serial.println(messageTemp);
         if (messageTemp == "charging")
         {
-            state = charging;
+            state = 0; // charging
         }
         else if (messageTemp == "toll")
         {
-            state = toll;
+            state = 1; // toll
         }
         else if (messageTemp == "idle")
         {
-            state = idle;
+            state = 2; //idle
         }
     }
 }
@@ -199,13 +207,15 @@ void reconnect()
     {
         Serial.print("Attempting MQTT connection...");
         // Attempt to connect
-        if (client.connect("ESP32Client"))
+        if (client.connect("Zumo"))
         {
             Serial.println("connected");
           // Subscribe or resubscribe to a topic
           client.subscribe("esp32/output");
           client.subscribe("zumo/bank/currentBalance");
           client.subscribe("zumo/bank/error");
+          client.subscribe("zumo/battery/newLevel");
+          client.subscribe("zumo/state");
         }
         else
         {
@@ -220,31 +230,28 @@ void reconnect()
 
 void processSerial2() 
 {
-    while (Serial2.available()) 
+    while (Serial.available()) 
     {   
-        String input = Serial2.readStringUntil('\n');
-        if (input == "") {
-            Serial.println("Doing stuff to help");
-        }
-        else if (input == "test")
+        String input = Serial.readStringUntil('\n');
+        DynamicJsonDocument doc(1024);
+        deserializeJson(doc, input);
+        const char* topic = doc["topic"];
+        if (topic == "zumo/sensorData")
         {
-            Serial.println("Doing stuff to test");
+            const char* payload = doc["sensorArray"];
+            client.publish(topic, payload);
         }
-        
-        // Konverterer input til int
-        input = input.toInt();
-        else 
+        else if (topic == "zumo/speed")
         {
-            if (input > 0)
-            {
-            motorSpeed = input.toInt();
-            Serial.print("Motor speed: ");
+            motorSpeed = doc["speed"];
+            Serial.println("Motor speed: ");
             Serial.println(motorSpeed);
-            }
-            else
-            {
-                // TODO: Charge the battery;
-            }
+            char tempString[10];
+            itoa(motorSpeed, tempString, 10);
+            client.publish(topic, tempString);
+            // Maksfart: 400 (0,78 m/s)
+            // Deler på 500 for å få fart i m/s
+            // Dette foregår på node-red
         }
     }
 }
@@ -253,53 +260,71 @@ void calculateBatteryLevel()
 {
     float speedFactor = 0.01;
     unsigned long now = millis();
+    float batteryPercentage;
+
+    // Oppdaterer batterinivået hvert sekund
     if (now - batteryTimer > 1000 && motorSpeed > 0)
-    {
+    {   
         batteryTimer = now;
         batteryLevel -= motorSpeed * speedFactor; // P=mv
-
+        batteryPercentage = batteryLevel / batteryCapacity * 100;
         // Lagrer batterinivået i EEPROM
-        EEPROM.write(0, batteryLevel); 
+        EEPROM.write(0, round(batteryLevel)); 
         EEPROM.commit();
     }
-    if (batteryLevel <= 40)
-    {
-        // Si fra til Zumo at batterinivået er lavt
 
-        // Eventuelt se etter ladestasjon her
-    }
-    if (batteryLevel <= 10)
+    if (batteryLevel < 0)
     {
-        // Si fra til Zumo at batterinivået er kritisk lavt
-    }
-    {
-        batteryLevel = 100;
-    }
-    else if (batteryLevel < 0)
-    {
-        batteryLevel = 0;
+        batteryLevel = 0.0;
     
         // TODO: Send message to zumo to stop
-        Serial2.println("Battery empty") //REPLACE MESSAGE LATER
-        Serial2.println("Battery empty") //REPLACE MESSAGE LATER
+        Serial2.println("Battery empty"); //REPLACE MESSAGE LATER
 
         //death sound
 
     }
+    else if (batteryPercentage <= 10 && lastPercentage <= 10) // Kjører bare en gang
+    {
+        lastPercentage = batteryPercentage;
+        batteryCapacity -= 5; // 5% av batterikapasiteten er tapt på grunn av lavt batterinivå
+        // Si fra til Zumo at batterinivået er kritisk lavt
+
+    }
+    else if (batteryPercentage <= 40 && lastPercentage <= 40) // Kjører bare en gang
+    {
+        lastPercentage = batteryPercentage;
+        // Si fra til Zumo at batterinivået er lavt
+
+        // Eventuelt se etter ladestasjon her
+    }
+    else if (batteryPercentage > 100)
+    {
+        batteryLevel = batteryCapacity;
+    }
+}
+
+void calculateBatteryHealth()
+{
+       
 }
 
 void changeZumoState()
 {
     // Kjører ved mottatt melding fra MQTT-server 
     // Sender melding over serial for å endre tilstand på Zumo
-
+    // States:
+    // drive
+    // charge 
+    // trash
+    // reverse
 }
 void setup()
 {
     Serial.begin(115200);
     Serial2.begin(9600); // Start seriell kommunikasjon med Zumo
     EEPROM.begin(EEPROM_SIZE); // Start EEPROM
-    batteryLevel = EEPROM.read(0); // Leser batterinivå fra EEPROM
+    batteryLevel =  EEPROM.read(0); // Leser batterinivå fra EEPROM
+    batteryCapacity = EEPROM.read(2); // Leser batterikapasitet fra EEPROM
 
     setup_wifi();
     client.setServer(mqtt_server, 1883);
@@ -331,12 +356,8 @@ void loop()
     {
         lastMsg = now;
 
-        char tempString[3];
-        itoa(motorSpeed, tempString, 10);
-        client.publish("zumo/speed", tempString);
-
-        char tempString2[6];
-        dtostrf(batteryLevel, 1, 2, tempString2);
-        client.publish("zumo/battery", tempString2);
+        char tempString1[10];
+        dtostrf(batteryLevel, 1, 2, tempString1);
+        client.publish("zumo/battery/currentLevel", tempString1);
     }
 }

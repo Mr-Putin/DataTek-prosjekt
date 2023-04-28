@@ -11,7 +11,6 @@
 
 // Globale variabler
 int motorSpeed = 50;
-int state = 0;
 bool processSensorData = false;
 uint8_t sensorDataIndex = 0;
 uint8_t lastPercentage = 100;
@@ -32,6 +31,15 @@ const char *password = "03175B|j";
 
 // MQTT Server IP-adresse
 const char *mqtt_server = "84.52.229.122";
+
+typedef enum { // Definerer tilstandene til Zumo
+    DRIVE,
+    CHARGE,
+    TRASH,
+    REVERSE
+} State;
+State state = DRIVE; // Setter tilstanden til Zumo til DRIVE
+int lastState = 0; // Variabel for å holde styr på forrige tilstand
 
 // Setter opp WiFiClient
 WiFiClient espClient;
@@ -185,18 +193,32 @@ void callback(char *topic, byte *message, unsigned int length)
     {
         Serial1.print("change state");
         Serial.println(messageTemp);
-        if (messageTemp == "charging")
+        if (messageTemp == "drive")
         {
-            state = 0; // charging
+            state = DRIVE;
         }
-        else if (messageTemp == "toll")
+        else if (messageTemp == "charge")
         {
-            state = 1; // toll
+            state = CHARGE; 
         }
-        else if (messageTemp == "idle")
+        else if (messageTemp == "trash")
         {
-            state = 2; //idle
+            state = TRASH; 
         }
+        else if (messageTemp == "reverse")
+        {
+            state = REVERSE;
+        }
+    }
+    if (String(topic) == "charger/start") 
+    {
+        state = CHARGE;
+    }
+    if (String(topic) == "charger/stop") 
+    {
+        account.transfer(int(messageTemp), charger);
+        batteryChargeCycles++;
+        state = DRIVE;
     }
 }
 
@@ -230,18 +252,20 @@ void reconnect()
 
 void processSerial2() 
 {
-    while (Serial.available()) 
+    while (Serial2.available()) 
     {   
-        String input = Serial.readStringUntil('\n');
-        DynamicJsonDocument doc(1024);
+        String input = Serial2.readStringUntil('\n');
+        Serial.println("Received message Serial2: ");
+        Serial.println(input);
+        StaticJsonDocument<200> doc;
         deserializeJson(doc, input);
         const char* topic = doc["topic"];
-        if (topic == "zumo/sensorData")
+        if (!strcmp(topic, "zumo/sensorData"))
         {
-            const char* payload = doc["sensorArray"];
+            const char* payload = doc["sensorverdier"];
             client.publish(topic, payload);
         }
-        else if (topic == "zumo/speed")
+        else if (!strcmp(topic, "zumo/speed"))
         {
             motorSpeed = doc["speed"];
             Serial.println("Motor speed: ");
@@ -269,7 +293,7 @@ void calculateBatteryLevel()
         batteryLevel -= motorSpeed * speedFactor; // P=mv
         batteryPercentage = batteryLevel / batteryCapacity * 100;
         // Lagrer batterinivået i EEPROM
-        EEPROM.write(0, round(batteryLevel)); 
+        EEPROM.write(0, batteryLevel);
         EEPROM.commit();
     }
 
@@ -278,7 +302,7 @@ void calculateBatteryLevel()
         batteryLevel = 0.0;
     
         // TODO: Send message to zumo to stop
-        Serial2.println("Battery empty"); //REPLACE MESSAGE LATER
+        //Serial2.println("Battery empty"); //REPLACE MESSAGE LATER
 
         //death sound
 
@@ -288,7 +312,8 @@ void calculateBatteryLevel()
         lastPercentage = batteryPercentage;
         batteryCapacity -= 5; // 5% av batterikapasiteten er tapt på grunn av lavt batterinivå
         // Si fra til Zumo at batterinivået er kritisk lavt
-
+        EEPROM.write(4, batteryCapacity);
+        EEPROM.commit();
     }
     else if (batteryPercentage <= 40 && lastPercentage <= 40) // Kjører bare en gang
     {
@@ -305,10 +330,10 @@ void calculateBatteryLevel()
 
 void calculateBatteryHealth()
 {
-       
+    // Hvis ferdig med lading, oppdater antall ladninger
 }
 
-void changeZumoState()
+void controlZumo()
 {
     // Kjører ved mottatt melding fra MQTT-server 
     // Sender melding over serial for å endre tilstand på Zumo
@@ -317,6 +342,30 @@ void changeZumoState()
     // charge 
     // trash
     // reverse
+    StaticJsonDocument<200> doc;
+    String json;
+    doc["topic"] = "zumo/state";
+    if (lastState != state)
+    {
+        lastState = state;
+        switch (state)
+        {
+            case DRIVE:
+                doc["state"] = "drive";
+                break;
+            case CHARGE:
+                doc["state"] = "charge";
+                break;
+            case TRASH:
+                doc["state"] = "trash";
+                break;
+            case REVERSE:
+                doc["state"] = "reverse";
+                break;
+        }
+        serializeJson(doc, json);
+        Serial2.println(json);
+    }
 }
 
 void setup()
@@ -325,7 +374,7 @@ void setup()
     Serial2.begin(9600); // Start seriell kommunikasjon med Zumo
     EEPROM.begin(EEPROM_SIZE); // Start EEPROM
     batteryLevel =  EEPROM.read(0); // Leser batterinivå fra EEPROM
-    batteryCapacity = EEPROM.read(2); // Leser batterikapasitet fra EEPROM
+    batteryCapacity = EEPROM.read(4); // Leser batterikapasitet fra EEPROM
 
     setup_wifi();
     client.setServer(mqtt_server, 1883);

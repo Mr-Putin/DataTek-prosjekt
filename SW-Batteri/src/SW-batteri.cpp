@@ -1,4 +1,4 @@
-#define DEBUG // Aktiverer debug mode. Kommenter ut ved ferdigstillelse
+//#define DEBUG // Aktiverer debug mode. Kommenter ut ved ferdigstillelse
 
 #include <WiFi.h>
 #include <ArduinoJson.h>
@@ -16,7 +16,7 @@ uint8_t lastPercentage = 100;
 float batteryPercentage = 100.0; 
 unsigned long batteryTimer = 0; // Timer for å holde styr på hvor lenge det har gått 
                                 // siden sist batterioppdatering for simulering
-float batteryCapacity = 3000.0; // Batterikapasitet i mAh
+float batteryCapacity = 20.0; // Batterikapasitet i kWh
 unsigned int batteryChargeCycles = 0; // Antall ganger batteriet har blitt ladet
 
 float powerConstant = 2; // Faktor for å justere forbruket til Zumo
@@ -33,11 +33,13 @@ const char *password = "03175B|j";
 const char *mqtt_server = "84.52.229.122";
 
 typedef enum { // Definerer tilstandene til Zumo
-    DRIVE,
-    CHARGE,
-    GARAGE,
-    TRASH,
-    REVERSE
+    DRIVE, // Linjefølging
+    CHARGE, // Normal lading
+    GARAGE, // Lading i parkeringshus
+    TRASH, // Søppeltømming
+    REVERSE, // Linjefølging i revers
+    CONTROL, // Manuell kontroll med joystick
+    STOP // Stopper Zumo
 } State;
 State state = DRIVE; // Setter tilstanden til Zumo til DRIVE
 int lastState = 0; // Variabel for å holde styr på forrige tilstand
@@ -67,7 +69,7 @@ public:
             {
                 if (accounts[i] == recipient)
                 {
-                    inArray = true; 
+                    inArray = true;
                     break;
                 }
             }
@@ -176,16 +178,14 @@ void callback(char *topic, byte *message, unsigned int length)
         lastPercentage = batteryPercentage;
 
         // Midlertidig
-        #ifdef DEBUG
         batteryChargeCycles++; // Øker antall ladninger
         batteryCapacity -= 5; // Reduserer kapasiteten
         preferences.putDouble("batteryCapacity", batteryCapacity); // Lagrer kapasiteten til batteriet i flash
         preferences.putUInt("batteryChargeCycles", batteryChargeCycles); // Lagrer antall ladninger i flash
-        #endif
     }
 
     // Når batteriet blir byttet ut
-    if (String(topic) == "zumo/battery/changed") 
+    if (String(topic) == "zumo/battery/swapped") 
     {
         Serial.print("Battery capacity: ");
         Serial.println(messageTemp);
@@ -201,7 +201,7 @@ void callback(char *topic, byte *message, unsigned int length)
     // Når tilstand Zumo skal endres til mottas gjennom MQTT
     if (String(topic) == "zumo/state") 
     {
-        Serial1.print("change state");
+        Serial2.print("change state");
         Serial.println(messageTemp);
         if (messageTemp == "drive")
         {
@@ -211,6 +211,10 @@ void callback(char *topic, byte *message, unsigned int length)
         {
             state = CHARGE; 
         }
+        else if (messageTemp == "garage")
+        {
+            state = GARAGE; 
+        }
         else if (messageTemp == "trash")
         {
             state = TRASH; 
@@ -219,6 +223,15 @@ void callback(char *topic, byte *message, unsigned int length)
         {
             state = REVERSE;
         }
+        else if (messageTemp == "control")
+        {
+            state = CONTROL;
+        }
+        else if (messageTemp == "stop")
+        {
+            state = STOP;
+        }
+
     }
     if (String(topic) == "charger/start") 
     {
@@ -238,7 +251,7 @@ void callback(char *topic, byte *message, unsigned int length)
         batteryCapacity -= 5; // Reduserer kapasiteten til batteriet som følge av oppladning
         preferences.putDouble("batteryCapacity", batteryCapacity); // Lagrer kapasiteten til batteriet i flash
         preferences.putUInt("batteryChargeCycles", batteryChargeCycles); // Lagrer antall ladninger i flash
-        state = DRIVE;
+        state = REVERSE;
     }
 }
 
@@ -361,32 +374,33 @@ void controlZumo()
     // charge 
     // trash
     // reverse
-    StaticJsonDocument<200> doc;
-    String json;
-    doc["topic"] = "zumo/state";
     if (lastState != state)
     {
         lastState = state;
         switch (state)
         {
             case DRIVE:
-                doc["state"] = "drive";
+                Serial2.println("drive");
                 break;
             case CHARGE:
-                doc["state"] = "charge";
+                Serial2.println("charge");
                 break;
             case GARAGE:
-                doc["state"] = "garage";
+                Serial2.println("garage");
                 break;
             case TRASH:
-                doc["state"] = "trash";
+                Serial2.println("trash");
                 break;
             case REVERSE:
-                doc["state"] = "reverse";
+                Serial2.println("reverse");
+                break;
+            case CONTROL:
+                Serial2.println("control");
+                break;
+            case STOP:
+                Serial2.println("stop");
                 break;
         }
-        serializeJson(doc, json);
-        Serial2.println(json);
     }
 }
 
@@ -409,7 +423,6 @@ void setup()
     // MQTT kode:
     // Synkroniserer lokal konto med server
     account.requestServerBalance();
-
 }
 
 void loop()

@@ -1,14 +1,12 @@
-//#define DEBUG // Aktiverer debug mode. Kommenter ut ved ferdigstillelse
-
 #include <WiFi.h>
 #include <ArduinoJson.h>
 #include <PubSubClient.h>
 #include <Preferences.h>
 
 Preferences preferences; // Brukes for å lagre data i flash
+
 // Globale variabler
 int motorSpeed = 0;
-bool processSensorData = false;
 uint8_t sensorDataIndex = 0;
 uint8_t lastPercentage = 100;
 
@@ -23,6 +21,9 @@ float powerConstant = 0.001; // Faktor for å justere forbruket til Zumo
 
 unsigned long lastSpeedTime = 0; // Timer for å holde styr på hvor lenge det har gått 
                                  // siden sist hastighetsoppdatering for simulering
+
+unsigned long controlTimer = 0; // Timer for å holde styr på hvor lenge Zumo har 
+                                // vært i manuell kontrollmodus
 
 
 // Setter opp timer og meldingsvariabler
@@ -39,14 +40,14 @@ const char *mqtt_server = "84.52.229.122";
 typedef enum { // Definerer tilstandene til Zumo
     DRIVE, // Linjefølging
     CHARGE, // Normal lading
-    GARAGE, // Lading i parkeringshus
     REVERSE, // Linjefølging i revers
     CONTROL, // Manuell kontroll med joystick
     STOP, // Stopper Zumo
     CALIBRATE // Kalibrerer sensorene
 } State;
 State state = DRIVE; // Setter tilstanden til Zumo til DRIVE
-int lastState = 0; // Variabel for å holde styr på forrige tilstand
+
+int lastState = state; // Variabel for å holde styr på forrige tilstand
 
 // Setter opp WiFiClient
 WiFiClient zumoClient;
@@ -55,21 +56,22 @@ PubSubClient client(zumoClient);
 class BankAccount
 {
 private:
-    int balance = 0; // Penger på kontoen
+    int balance = 0; // Saldo
     const char fromAccount[50] = "zumo"; // Kontoen som skal brukes
     char topic[50]; // Topic placeholder
-    String accounts[2] = {"charger", "toll"}; // Kontoer som kan overføres til
+    String accounts[2] = {"charger"}; // Kontoer som kan overføres til
     const char pin[5] = "1337"; // Pin for å overføre penger
 
 public:
     void transfer(int amount, String toAccount)
     {
-        char recipient[10];
+        Serial.printf("Sending money from %s to %s\n", fromAccount, toAccount); // Printer til serial monitor
+        char recipient[50];
         toAccount.toCharArray(recipient, 50); // Konverterer String til char array
         if (balance >= amount) // Sjekker om det er nok penger på kontoen
         {
             bool inArray = false;
-            for (int i = 0; i < 2; i++) // Sjekker om kontoen som skal overføres til er i arrayen
+            for (int i = 0; i < 1; i++) // Sjekker om kontoen som skal overføres til er i arrayen
             {
                 if (accounts[i] == recipient)
                 {
@@ -86,6 +88,7 @@ public:
                 strcpy(topic, fromAccount); // Legger kontoen som skal overføre penger på topicen
                 strcat(topic, "/bank/transfer/"); 
                 strcat(topic, recipient); // Legger kontoen som skal motta penger på topicen
+                Serial.printf("%s, %s\n", topic, payload); // Printer topic og payload til serial monitor
                 client.publish(topic, payload); // Sender melding til serveren
             }
             else
@@ -93,7 +96,7 @@ public:
                 Serial.print(recipient);
                 Serial.println(" not in local database."); 
             }
-            requestServerBalance(); // Forespør balanse fra server
+            requestServerBalance(); // Forespør saldo fra server
         }
         else
         {
@@ -106,9 +109,9 @@ public:
     }
     void updateLocalBalance(int amount)
     {
-        balance = amount; // Oppdaterer balansen lokalt
+        balance = amount; // Oppdaterer saldoen lokalt
     }
-    void requestServerBalance() // Forespør balanse fra server
+    void requestServerBalance() // Forespør saldo fra server
     {
         strcpy(topic, fromAccount); 
         strcat(topic, "/bank/getBalance");
@@ -157,13 +160,13 @@ void callback(char *topic, byte *message, unsigned int length)
     }
     Serial.println();
 
-    // Når balansen mottas fra serveren
+    // Når saldo mottas fra serveren
     if (String(topic) == "zumo/bank/currentBalance") 
     {
-        Serial.print("Current balance: ");
-        Serial.println(messageTemp);
         int currentBalance = messageTemp.toInt();
         account.updateLocalBalance(currentBalance);
+        Serial.print("Current balance: ");
+        Serial.println(account.getBalance());
     }
 
     // Når det er en feil fra serveren
@@ -185,10 +188,9 @@ void callback(char *topic, byte *message, unsigned int length)
     // Når batteriet blir byttet ut
     if (String(topic) == "zumo/battery/swapped") 
     {
-        Serial.print("Battery capacity: ");
-        Serial.println(messageTemp);
-        batteryCapacity = messageTemp.toFloat();
-        batteryPercentage = 100;
+        account.transfer(messageTemp.toInt(), "charger"); // Overfører penger til lader
+        batteryCapacity = 20.0;
+        batteryPercentage = 100.0;
         batteryChargeCycles = 0;
         
         preferences.putDouble("batCap", batteryCapacity); // Lagrer kapasiteten til batteriet i flash
@@ -208,10 +210,6 @@ void callback(char *topic, byte *message, unsigned int length)
         {
             state = CHARGE; 
         }
-        else if (messageTemp == "garage")
-        {
-            state = GARAGE; 
-        }
         else if (messageTemp == "reverse")
         {
             state = REVERSE;
@@ -219,6 +217,7 @@ void callback(char *topic, byte *message, unsigned int length)
         else if (messageTemp == "control")
         {
             state = CONTROL;
+            controlTimer = millis();
         }
         else if (messageTemp == "stop")
         {
@@ -229,27 +228,27 @@ void callback(char *topic, byte *message, unsigned int length)
             state = CALIBRATE;
         }
     }
-    if (String(topic) == "charger/start") 
+
+    if (String(topic) == "charger/start")
     {
-        if (messageTemp = "garage")
-        {
-            state = GARAGE;
-        }
-        else
-        {
-            state = CHARGE;
-        }
+        state = CHARGE;
     }
+
     if (String(topic) == "charger/stop") 
     {
         Serial.printf("Price for charging: %s\n", messageTemp);
         account.transfer(messageTemp.toInt(), "charger"); // Overfører penger til laderen
         batteryChargeCycles++; // Øker antall ladninger
         batteryCapacity -= 0.1; // Reduserer kapasiteten til batteriet som følge av oppladning
-        preferences.putDouble("batCap", batteryCapacity); // Lagrer kapasiteten til batteriet i flash
+        preferences.putDouble("batPrcnt", batteryPercentage); // Lagrer kapasiteten til batteriet i flash
         preferences.putUInt("batCycles", batteryChargeCycles); // Lagrer antall ladninger i flash
         state = DRIVE;
     }
+
+    if (String(topic) == "charger/batterySwap") {
+        state = CHARGE;
+    }
+
     if ((String(topic) == "zumo/control/direction") && (state == CONTROL)) {
         batteryPercentage -= powerConstant * 200 * 0.2; // Zumo kjører med motorspeed 200 i 0.2 sekunder
         if (batteryPercentage <= 0.0) {
@@ -259,8 +258,12 @@ void callback(char *topic, byte *message, unsigned int length)
         client.publish("zumo/battery/currentLevel", String(batteryPercentage, 2).c_str()); // Sender nåværende batterinivå til serveren
         Serial2.println(messageTemp); // Sender kommando til Zumo
     }
-    if (String(topic) == "ir/break" && (state == CHARGE || state == GARAGE)) { // Hvis Zumo er i lademodus og 
-        Serial2.println("break-beam");                                         // break-beam-sensoren registrerer noe
+
+    if (String(topic) == "ir/sensor" && state == CHARGE ) { // Hvis Zumo er i lademodus og 
+        if (messageTemp == "1") {                           // break-beam-sensoren registrerer noe 
+            Serial2.println("break-beam");
+            client.publish("zumo/ready", String(account.getBalance()).c_str()); // Sender melding til laderen om at Zumo er klar til å lade
+        }                                                                                                             
     }
 }
 
@@ -271,23 +274,22 @@ void reconnect()
     {
         Serial.print("Attempting MQTT connection...");
         // Attempt to connect
-        if (client.connect("Zumo"))
-        {
+        if (client.connect("Zumo")) {
             Serial.println("connected");
-          // Subscribe or resubscribe to a topic
-          client.subscribe("esp32/output");
-          client.subscribe("zumo/bank/currentBalance");
-          client.subscribe("zumo/bank/error");
-          client.subscribe("zumo/battery/newLevel");
-          client.subscribe("zumo/battery/swapped");
-          client.subscribe("zumo/state");
-          client.subscribe("zumo/control/direction");
-          client.subscribe("charger/start");
-          client.subscribe("charger/stop");
-          client.subscribe("ir/break");
+            // Subscribe or resubscribe to a topic
+            client.subscribe("esp32/output");
+            client.subscribe("zumo/bank/currentBalance");
+            client.subscribe("zumo/bank/error");
+            client.subscribe("zumo/battery/newLevel");
+            client.subscribe("zumo/battery/swapped");
+            client.subscribe("zumo/state");
+            client.subscribe("zumo/control/direction");
+            client.subscribe("charger/start");
+            client.subscribe("charger/stop");
+            client.subscribe("charger/batterySwap");
+            client.subscribe("ir/sensor");
         }
-        else
-        {
+        else {
             Serial.print("failed, rc=");
             Serial.print(client.state());
             Serial.println(" try again in 5 seconds");
@@ -335,12 +337,12 @@ void calculateBatteryLevel()
         motorSpeed = 0;
         client.publish("zumo/speed", String(motorSpeed).c_str());
     }
-    else if (state == DRIVE || state == REVERSE || state == CHARGE || state == GARAGE) {
+    else if (state != STOP && state != CONTROL) {
         // Oppdaterer batterinivået hvert sekund
         if (now - lastBatteryUpdate > 1000 && motorSpeed > 0)
         {   
             lastBatteryUpdate = now;
-            float batteryLevel = batteryPercentage / 100 * batteryCapacity; // Regner ut batterinivået i mAh
+            float batteryLevel = batteryPercentage / 100 * batteryCapacity; // Regner ut batterinivået i kWh
             batteryLevel -= motorSpeed * powerConstant ; // P=mv
             batteryPercentage = batteryLevel / batteryCapacity * 100; // Regner ut prosent
 
@@ -352,29 +354,24 @@ void calculateBatteryLevel()
             batteryCapacity = 0.0;
         }
 
-        if (batteryPercentage < 0)
+        if (batteryPercentage <= 0.0)
         {
             batteryPercentage = 0.0;
-
-            // TODO: Send message to zumo to stop
-            //Serial2.println("Battery empty"); //REPLACE MESSAGE LATER
-
-            //death sound
+            state = STOP;
         }
-        else if (batteryPercentage <= 10 && lastPercentage > 10) // Kjører bare en gang
+        else if (batteryPercentage <= 10 && lastPercentage > 10) // Kjører bare en gang per utlading
         {
             Serial.println("Battery low");
             lastPercentage = batteryPercentage;
             batteryCapacity -= 0.5; // 0,5kWh av batterikapasiteten er tapt på grunn av lavt batterinivå
             preferences.putDouble("batCap", batteryCapacity);
-            // Si fra til Zumo at batterinivået er kritisk lavt
         }
         else if (batteryPercentage <= 20 && lastPercentage > 20) {
             lastPercentage = batteryPercentage;
             // Finn ladestasjon
             state = CHARGE;
         }
-        else if (batteryPercentage <= 40 && lastPercentage > 40) // Kjører bare en gang
+        else if (batteryPercentage <= 40 && lastPercentage > 40) // Kjører bare en gang per utlading
         {
             lastPercentage = batteryPercentage;
             // Si fra til Zumo at batterinivået er lavt
@@ -386,17 +383,23 @@ void calculateBatteryLevel()
     }
 }
 
-void calculateBatteryHealth()
-{
-    // Hvis ferdig med lading, oppdater antall ladninger
-}
-
 void controlZumo()
 {
     // Kjører ved mottatt melding fra MQTT-server 
     // Sender melding over serial for å endre tilstand på Zumo
-    if (lastState != state)
+
+    if (state == CONTROL)
     {
+        unsigned long now = millis();
+        if (now - controlTimer > 60000) // Når zumoen har blitt styrt i mer enn 60 sekunder, gå tilbake til STOP
+        {
+            state = STOP;
+        }
+    }
+    if (lastState != state)
+    {   
+        Serial.print("State changed: ");
+        Serial.println(state);
         lastState = state;
         switch (state)
         {
@@ -405,9 +408,6 @@ void controlZumo()
                 break;
             case CHARGE:
                 Serial2.println("charge");
-                break;
-            case GARAGE:
-                Serial2.println("garage");
                 break;
             case REVERSE:
                 Serial2.println("reverse");
@@ -425,6 +425,17 @@ void controlZumo()
     }
 }
 
+void sendBatteryInfo() 
+{
+    unsigned long now = millis();
+    if (now - lastMsg > 1000)
+    {
+        // Sender over MQTT
+        client.publish("zumo/battery/currentLevel", String(batteryPercentage, 2).c_str());
+        client.publish("zumo/battery/capacity", String(batteryCapacity, 2).c_str());
+        lastMsg = now;
+    }
+}
 void setup()
 {
     Serial.begin(115200);
@@ -433,7 +444,6 @@ void setup()
     batteryPercentage = preferences.getDouble("batPrcnt", batteryPercentage); // Leser batterinivå fra flash
     batteryCapacity = preferences.getDouble("batCap", batteryCapacity); // Leser batterikapasitet fra flash
     batteryChargeCycles = preferences.getUInt("batCycles", batteryChargeCycles); // Leser antall ladninger fra flash
-
 
     setup_wifi();
     client.setServer(mqtt_server, 1883);
@@ -449,36 +459,14 @@ void setup()
 
 void loop()
 {
-    calculateBatteryLevel();
-    processSerial2();
-    controlZumo();
-
     if (!client.connected())
     {
         reconnect();
     }
     client.loop();
 
-    unsigned long now = millis();
-    if (now - lastMsg > 1000)
-    {
-        // Sender over MQTT
-        client.publish("zumo/battery/currentLevel", String(batteryPercentage, 2).c_str());
-        client.publish("zumo/battery/capacity", String(batteryCapacity, 2).c_str());
-
-#ifdef DEBUG
-    Serial.print("Battery percentage: ");
-    Serial.println(batteryPercentage);
-    Serial.print("Battery capacity: ");
-    Serial.println(batteryCapacity);
-    Serial.print("Battery charge cycles: ");
-    Serial.println(batteryChargeCycles);
-    Serial.print("State: ");
-    Serial.println(state);
-    Serial.print("Balance: ");
-    Serial.println(account.getBalance());
-    Serial.println();
-#endif
-        lastMsg = now;
-    }
+    calculateBatteryLevel();
+    processSerial2();
+    controlZumo();
+    sendBatteryInfo();
 }

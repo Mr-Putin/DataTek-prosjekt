@@ -1,4 +1,4 @@
 TODO:
-    Make speedo more reliable
-    Sensor verdier på node-red
-    FÅ på plass batteribytte
+    Make speedo more reliable OK
+    Sensor verdier på node-red 
+    Få på plass batteribytte

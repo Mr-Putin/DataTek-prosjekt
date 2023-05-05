@@ -1,0 +1,3360 @@
+[
+    {
+        "id": "a3cf62eb3b3f3ad5",
+        "type": "tab",
+        "label": "Charging Station",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "25eb9d3f2dbdfe73",
+        "type": "tab",
+        "label": "Zumo",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "5c4628e039aefc51",
+        "type": "tab",
+        "label": "Bank",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "05c7087e739ed084",
+        "type": "tab",
+        "label": "Sensor",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0161344284cbe20f",
+        "type": "tab",
+        "label": "Controls",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "7ee658bf1d94bf8f",
+        "type": "tab",
+        "label": "Keyboard",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "86abba38980d7c65",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-dark",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0099d1",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#097479",
+                    "value": "#097479",
+                    "edited": true
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#097479",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#0eb8c0",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#555555",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#eeeeee",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#097479",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "true",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "eaa51df5621fcb4f",
+        "type": "mqtt-broker",
+        "name": "Raspberry PI broker (Kato's Ruter)",
+        "broker": "192.168.1.153",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "3aa8c1ce57eedcdb",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.1.106",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "61285987.c20328",
+        "type": "ui_group",
+        "name": "Ladingsmeny",
+        "tab": "e7c46d5e.a1283",
+        "order": 1,
+        "disp": false,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e2609ee70ea4bc31",
+        "type": "ui_group",
+        "name": "Ladingsmeny beskrivelse",
+        "tab": "e7c46d5e.a1283",
+        "order": 2,
+        "disp": false,
+        "width": 6,
+        "collapse": false
+    },
+    {
+        "id": "e7c46d5e.a1283",
+        "type": "ui_tab",
+        "name": "Ladingsstasjon",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "dd61b79cb6c2d999",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.1.153",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "f5d71cea69964d58",
+        "type": "mqtt-broker",
+        "name": "Mosquitto broker PC",
+        "broker": "192.168.10.154",
+        "port": "1882",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "0831716f4122e73c",
+        "type": "ui_tab",
+        "name": "Zumo",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "08f46d3d451a700e",
+        "type": "ui_group",
+        "name": "Gauges",
+        "tab": "0831716f4122e73c",
+        "order": 1,
+        "disp": true,
+        "width": "10",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "0cd1a8cc15bdd5f2",
+        "type": "mqtt-broker",
+        "name": "Midjoskyen",
+        "broker": "84.52.229.122",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "81a0f887f385f64d",
+        "type": "ui_group",
+        "name": "Lap timer",
+        "tab": "34a5c39970b0a8d9",
+        "order": 2,
+        "disp": true,
+        "width": 7,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "34a5c39970b0a8d9",
+        "type": "ui_tab",
+        "name": "Sensor",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "e7fa7a4da5b4f18b",
+        "type": "ui_group",
+        "name": "Light",
+        "tab": "34a5c39970b0a8d9",
+        "order": 3,
+        "disp": true,
+        "width": 7,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "9b71e02f5092e332",
+        "type": "ui_tab",
+        "name": "BankAccount",
+        "icon": "dashboard",
+        "order": 5,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "0683e4e7ddd178b6",
+        "type": "ui_group",
+        "name": "Transfer to Zumo",
+        "tab": "9b71e02f5092e332",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "fad49145facbd0f3",
+        "type": "ui_group",
+        "name": "Transfer to charger",
+        "tab": "9b71e02f5092e332",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "84b2a051fc82585f",
+        "type": "ui_group",
+        "name": "Controls",
+        "tab": "0831716f4122e73c",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "463f70c0f65e9858",
+        "type": "ui_group",
+        "name": "States",
+        "tab": "0831716f4122e73c",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "67bec9744356c2b0",
+        "type": "ui_group",
+        "name": "Temperature",
+        "tab": "34a5c39970b0a8d9",
+        "order": 4,
+        "disp": true,
+        "width": 7,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6a47cd6.209cd34",
+        "type": "websocket-client",
+        "path": "ws://localhost:1880/ws/keyboard",
+        "tls": "",
+        "wholemsg": "false"
+    },
+    {
+        "id": "15eb5b0d.fb9095",
+        "type": "websocket-listener",
+        "path": "/ws/keyboard",
+        "wholemsg": "false"
+    },
+    {
+        "id": "2dbdd09a0bbd5b16",
+        "type": "ui_group",
+        "name": "Plot",
+        "tab": "34a5c39970b0a8d9",
+        "order": 5,
+        "disp": true,
+        "width": 21,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "971e92cb1bd9d96f",
+        "type": "ui_group",
+        "name": "Highscore",
+        "tab": "34a5c39970b0a8d9",
+        "order": 1,
+        "disp": true,
+        "width": 21,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "5d5e5f37.1bfc08",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "e92de52a.5b7f6",
+        "type": "mqtt-broker",
+        "name": "MQTT Broker",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "557f529c5a60a07b",
+        "type": "ui_group",
+        "name": "readytocharge",
+        "tab": "e7c46d5e.a1283",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "821612f14a4dbe10",
+        "type": "ui_group",
+        "name": "ReadyTOCharge",
+        "tab": "",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f19c5929ba172399",
+        "type": "ui_spacer",
+        "z": "05c7087e739ed084",
+        "name": "spacer",
+        "group": "971e92cb1bd9d96f",
+        "order": 2,
+        "width": 18,
+        "height": 1
+    },
+    {
+        "id": "7c0fc1a90e392991",
+        "type": "mqtt out",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "topic": "chargingStation/fullCharge",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 960,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "0385fdfb5d272501",
+        "type": "mqtt out",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "topic": "chargingStation/fastCharge",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 960,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "b0ba9b814b21d924",
+        "type": "mqtt out",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "topic": "chargingStation/chargeToPercentage",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 990,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "509d97116e7ceac2",
+        "type": "mqtt out",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "topic": "chargingStation/chargeTime",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 960,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "3a9477f920788e0c",
+        "type": "mqtt out",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "topic": "chargingStation/chargeButton",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 990,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "d8a390ad0a8f50dd",
+        "type": "ui_button",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "group": "61285987.c20328",
+        "order": 5,
+        "width": 9,
+        "height": 3,
+        "passthru": false,
+        "label": "Lad",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "1",
+        "payloadType": "num",
+        "topic": "ladestasjon/start_lading",
+        "topicType": "msg",
+        "x": 550,
+        "y": 520,
+        "wires": [
+            [
+                "aacd32dc094d0970"
+            ]
+        ]
+    },
+    {
+        "id": "6c026f22670dbc90",
+        "type": "ui_switch",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "label": "Fullading",
+        "tooltip": "",
+        "group": "61285987.c20328",
+        "order": 1,
+        "width": 12,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "ladestasjon/fullading",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "num",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "num",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 440,
+        "y": 280,
+        "wires": [
+            [
+                "7c0fc1a90e392991"
+            ]
+        ]
+    },
+    {
+        "id": "5b41590e3441a3b1",
+        "type": "ui_switch",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "label": "Hurtiglading (35% tillegg)",
+        "tooltip": "",
+        "group": "61285987.c20328",
+        "order": 3,
+        "width": 12,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "ladestasjon/hurtiglading",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "num",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "num",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 490,
+        "y": 340,
+        "wires": [
+            [
+                "0385fdfb5d272501"
+            ]
+        ]
+    },
+    {
+        "id": "bffc485d4d7a83e6",
+        "type": "ui_slider",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "label": "Lading til bestemt prosent",
+        "tooltip": "",
+        "group": "61285987.c20328",
+        "order": 2,
+        "width": 12,
+        "height": 1,
+        "passthru": true,
+        "outs": "end",
+        "topic": "ladestasjon/lading_til_prosent",
+        "topicType": "msg",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 490,
+        "y": 400,
+        "wires": [
+            [
+                "b0ba9b814b21d924"
+            ]
+        ]
+    },
+    {
+        "id": "7bf207fd30697f95",
+        "type": "ui_text_input",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "label": "Velg tidspunkt for lading",
+        "tooltip": "",
+        "group": "61285987.c20328",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "time",
+        "delay": "0",
+        "topic": "ladestasjon/ladetid",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 490,
+        "y": 460,
+        "wires": [
+            [
+                "07e1ff57179f9a0c"
+            ]
+        ]
+    },
+    {
+        "id": "b2bdd15a07bb54a7",
+        "type": "ui_text",
+        "z": "a3cf62eb3b3f3ad5",
+        "group": "e2609ee70ea4bc31",
+        "order": 1,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "I denne menyen bestemmer hvordan du ønsker å lade zumo-bilen.",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 1440,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "d5c806bdfb2ed1d4",
+        "type": "ui_text",
+        "z": "a3cf62eb3b3f3ad5",
+        "group": "e2609ee70ea4bc31",
+        "order": 3,
+        "width": 6,
+        "height": 2,
+        "name": "",
+        "label": "Når ønsket lading er valgt, trykker du på \"Lad\". Ladingen vil settes da igang, eller ved ønsket tidspunkt.",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1550,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "25a7e5d59829fb41",
+        "type": "function",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "Reset nodene",
+        "func": "msg.payload = false;\nsetTimeout(function () {\n    node.send(msg);\n}, 100);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 160,
+        "y": 420,
+        "wires": [
+            [
+                "7bf207fd30697f95",
+                "bffc485d4d7a83e6",
+                "5b41590e3441a3b1",
+                "6c026f22670dbc90",
+                "d8a390ad0a8f50dd"
+            ]
+        ]
+    },
+    {
+        "id": "5fa4d3af36f9da1e",
+        "type": "ui_button",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "group": "61285987.c20328",
+        "order": 6,
+        "width": 3,
+        "height": 3,
+        "passthru": false,
+        "label": "Reset brytere",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "crimson",
+        "className": "",
+        "icon": "",
+        "payload": "1",
+        "payloadType": "num",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 160,
+        "y": 220,
+        "wires": [
+            [
+                "25a7e5d59829fb41",
+                "07468c769d378456"
+            ]
+        ]
+    },
+    {
+        "id": "07468c769d378456",
+        "type": "mqtt out",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "topic": "chargingStation/reset",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 940,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "07e1ff57179f9a0c",
+        "type": "function",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "timestamp to millis",
+        "func": "var date = new Date(msg.payload);\ndate.setHours(date.getHours() - 1);\nvar seconds = date.getSeconds() + (date.getMinutes() * 60) + (date.getHours() * 3600);\nmsg.payload = seconds * 1000;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 730,
+        "y": 460,
+        "wires": [
+            [
+                "509d97116e7ceac2"
+            ]
+        ]
+    },
+    {
+        "id": "333220b5306362d3",
+        "type": "http request",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "{{{url}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1190,
+        "y": 740,
+        "wires": [
+            [
+                "afb6a9786fbac44e"
+            ]
+        ]
+    },
+    {
+        "id": "afb6a9786fbac44e",
+        "type": "function",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "Filtrerer ut dataen for nåværende time",
+        "func": "const now = new Date();\nconst currentHour = now.getHours();\n\nconst filteredData = msg.payload.find((data) => {\n    const startTime = new Date(data.time_start);\n    const endTime = new Date(data.time_end);\n\n    return startTime.getHours() <= currentHour && endTime.getHours() > currentHour;\n});\n\nmsg.payload = filteredData;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 820,
+        "wires": [
+            [
+                "89da34084591b64a"
+            ]
+        ]
+    },
+    {
+        "id": "344529ab5d61b065",
+        "type": "ui_text",
+        "z": "a3cf62eb3b3f3ad5",
+        "group": "61285987.c20328",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Strømpris: NOK per kWh",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1490,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "89da34084591b64a",
+        "type": "function",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "Sender ut NOK per kWh for denne timen",
+        "func": "const NOK_per_kWh = msg.payload.NOK_per_kWh;\nmsg.payload = NOK_per_kWh;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1100,
+        "y": 820,
+        "wires": [
+            [
+                "344529ab5d61b065",
+                "a00ccae2f4311ef0"
+            ]
+        ]
+    },
+    {
+        "id": "a00ccae2f4311ef0",
+        "type": "mqtt out",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "topic": "chargingStation/electricityPrice",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 1490,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "aacd32dc094d0970",
+        "type": "function",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "Delay 1000 ms",
+        "func": "msg.payload = 1;\nsetTimeout(function () {\n    node.send(msg);\n}, 1000);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 520,
+        "wires": [
+            [
+                "3a9477f920788e0c"
+            ]
+        ]
+    },
+    {
+        "id": "f9b57edfe14742c5",
+        "type": "mqtt in",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "",
+        "topic": "charger/stop",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0cd1a8cc15bdd5f2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 90,
+        "y": 880,
+        "wires": [
+            [
+                "a879f7586a9c0f7a"
+            ]
+        ]
+    },
+    {
+        "id": "a879f7586a9c0f7a",
+        "type": "ui_text",
+        "z": "a3cf62eb3b3f3ad5",
+        "group": "61285987.c20328",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Pris for siste lading i kr: ",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 290,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "2037e28d15a7d315",
+        "type": "inject",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "Oppdaterer strømpris hvert 30 sekund",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "10",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 620,
+        "y": 740,
+        "wires": [
+            [
+                "e9f228dfbc4bc42a"
+            ]
+        ]
+    },
+    {
+        "id": "e9f228dfbc4bc42a",
+        "type": "function",
+        "z": "a3cf62eb3b3f3ad5",
+        "name": "Henter strømpris for API",
+        "func": "const now = new Date();\nconst year = now.getFullYear();\nconst month = String(now.getMonth() + 1).padStart(2, '0');\nconst day = String(now.getDate()).padStart(2, '0');\n\nconst url = `https://www.hvakosterstrommen.no/api/v1/prices/${year}/${month}-${day}_NO3.json`;\nmsg.url = url;\n\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 950,
+        "y": 740,
+        "wires": [
+            [
+                "333220b5306362d3"
+            ]
+        ]
+    },
+    {
+        "id": "a969ad42bbd4a783",
+        "type": "mqtt in",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "",
+        "topic": "zumo/speed",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0cd1a8cc15bdd5f2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 60,
+        "wires": [
+            [
+                "89efc6fc763ca674"
+            ]
+        ]
+    },
+    {
+        "id": "4544afc145253c03",
+        "type": "ui_gauge",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "",
+        "group": "08f46d3d451a700e",
+        "order": 1,
+        "width": 10,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Speed",
+        "label": "cm/s",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "80",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 590,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "b7628e256ae6936f",
+        "type": "mqtt in",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "",
+        "topic": "zumo/battery/currentLevel",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0cd1a8cc15bdd5f2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 120,
+        "wires": [
+            [
+                "766bfec8f114069b"
+            ]
+        ]
+    },
+    {
+        "id": "766bfec8f114069b",
+        "type": "ui_gauge",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "",
+        "group": "08f46d3d451a700e",
+        "order": 2,
+        "width": 5,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Battery",
+        "label": "Percent",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#c43f3d",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 580,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "fcaed3c8c70723d9",
+        "type": "ui_button",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "",
+        "group": "61285987.c20328",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Swap battery",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "20",
+        "payloadType": "num",
+        "topic": "charger/batterySwap",
+        "topicType": "str",
+        "x": 150,
+        "y": 240,
+        "wires": [
+            [
+                "8e7b1cd5a75fbc76"
+            ]
+        ]
+    },
+    {
+        "id": "8e7b1cd5a75fbc76",
+        "type": "mqtt out",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 590,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "ead89931e0c4e145",
+        "type": "mqtt in",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "",
+        "topic": "zumo/battery/capacity",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0cd1a8cc15bdd5f2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 180,
+        "wires": [
+            [
+                "f4759a51d85ae3ff"
+            ]
+        ]
+    },
+    {
+        "id": "f4759a51d85ae3ff",
+        "type": "ui_gauge",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "",
+        "group": "08f46d3d451a700e",
+        "order": 3,
+        "width": 5,
+        "height": 5,
+        "gtype": "donut",
+        "title": "Capacity",
+        "label": "kWh",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "20",
+        "colors": [
+            "#c43f3d",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 580,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "89efc6fc763ca674",
+        "type": "function",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "Speed convert",
+        "func": "let input = msg.payload / 500; // Convert to m/s\ninput *= 100; // Convert to cm/s\nmsg.payload = input.toFixed(2);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 60,
+        "wires": [
+            [
+                "4544afc145253c03"
+            ]
+        ]
+    },
+    {
+        "id": "f175cc31cf413971",
+        "type": "ui_button",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "state: drive",
+        "group": "463f70c0f65e9858",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Drive",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "drive",
+        "payloadType": "str",
+        "topic": "zumo/state",
+        "topicType": "str",
+        "x": 170,
+        "y": 300,
+        "wires": [
+            [
+                "907e153fc66087be"
+            ]
+        ]
+    },
+    {
+        "id": "654a1cbeb1a505e3",
+        "type": "ui_button",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "state: reverse",
+        "group": "463f70c0f65e9858",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Reverse",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "reverse",
+        "payloadType": "str",
+        "topic": "zumo/state",
+        "topicType": "str",
+        "x": 170,
+        "y": 340,
+        "wires": [
+            [
+                "907e153fc66087be"
+            ]
+        ]
+    },
+    {
+        "id": "f881695fdd28ab25",
+        "type": "ui_button",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "state: stop",
+        "group": "463f70c0f65e9858",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Stop",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "stop",
+        "payloadType": "str",
+        "topic": "zumo/state",
+        "topicType": "str",
+        "x": 160,
+        "y": 420,
+        "wires": [
+            [
+                "907e153fc66087be"
+            ]
+        ]
+    },
+    {
+        "id": "57e195715615a357",
+        "type": "ui_button",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "state: calibrate",
+        "group": "463f70c0f65e9858",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Calibrate",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "calibrate",
+        "payloadType": "str",
+        "topic": "zumo/state",
+        "topicType": "str",
+        "x": 170,
+        "y": 460,
+        "wires": [
+            [
+                "907e153fc66087be"
+            ]
+        ]
+    },
+    {
+        "id": "907e153fc66087be",
+        "type": "mqtt out",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 430,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "66e65f02ae461c3f",
+        "type": "link in",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "From bank",
+        "links": [
+            "2aae9af78811c7b5"
+        ],
+        "x": 45,
+        "y": 380,
+        "wires": [
+            [
+                "7dcdf44bcc136915"
+            ]
+        ]
+    },
+    {
+        "id": "7dcdf44bcc136915",
+        "type": "change",
+        "z": "25eb9d3f2dbdfe73",
+        "name": "state. control",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "zumo/state",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "control",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 160,
+        "y": 380,
+        "wires": [
+            [
+                "907e153fc66087be"
+            ]
+        ]
+    },
+    {
+        "id": "d710d4b8673c94af",
+        "type": "mqtt in",
+        "z": "5c4628e039aefc51",
+        "name": "",
+        "topic": "zumo/bank/getBalance",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0cd1a8cc15bdd5f2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 100,
+        "y": 40,
+        "wires": [
+            [
+                "f2f68c97ce02df20"
+            ]
+        ]
+    },
+    {
+        "id": "12df9e7fd088aa8a",
+        "type": "mqtt out",
+        "z": "5c4628e039aefc51",
+        "name": "",
+        "topic": "zumo/bank/currentBalance",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 760,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "f2f68c97ce02df20",
+        "type": "switch",
+        "z": "5c4628e039aefc51",
+        "name": "Password check",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1337",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 300,
+        "y": 40,
+        "wires": [
+            [
+                "7c1d6065b949102f"
+            ]
+        ]
+    },
+    {
+        "id": "7c1d6065b949102f",
+        "type": "file in",
+        "z": "5c4628e039aefc51",
+        "name": "readBalance",
+        "filename": "/home/pi/Documents/Bank/zumoBalance.txt",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 470,
+        "y": 40,
+        "wires": [
+            [
+                "12df9e7fd088aa8a",
+                "8a264dfdbe02b650"
+            ]
+        ]
+    },
+    {
+        "id": "87dfb671eedb9c6a",
+        "type": "function",
+        "z": "5c4628e039aefc51",
+        "name": "Check pin and return value",
+        "func": "var input = String(msg.payload)\nvar pinCode = \"1337\";\nif (input.slice(-4) === pinCode)\n{\n    msg.payload = input.slice(0, -4);\n}\nelse\n{\n    msg.topic = \"zumo/bank/error\";\n    msg.payload = \"Wrong pin!\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 240,
+        "y": 220,
+        "wires": [
+            [
+                "9df869403d1a7495"
+            ]
+        ]
+    },
+    {
+        "id": "9df869403d1a7495",
+        "type": "switch",
+        "z": "5c4628e039aefc51",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "zumo/bank/transfer/charger",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "zumo/bank/error",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 350,
+        "y": 260,
+        "wires": [
+            [
+                "2a7dd37f6b5589cc",
+                "2fe20529a028cc72"
+            ],
+            [
+                "6e096414ba6690ad"
+            ]
+        ]
+    },
+    {
+        "id": "4c502951911f604c",
+        "type": "function",
+        "z": "5c4628e039aefc51",
+        "name": "calculate",
+        "func": "var currentBalance = global.get(\"zumoBalance\");\nvar transferAmount = parseInt(msg.payload);\nif (transferAmount > currentBalance)\n{\n    msg.topic = \"zumo/bank/error\";\n    msg.payload = \"Not enough money in account\";\n}\nelse \n{\n    var newBalance = currentBalance - transferAmount;\n    msg.topic = \"zumo/bank/currentBalance\";\n    msg.payload = newBalance;\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 260,
+        "wires": [
+            [
+                "525d8726aba10f0b"
+            ]
+        ]
+    },
+    {
+        "id": "2a7dd37f6b5589cc",
+        "type": "file in",
+        "z": "5c4628e039aefc51",
+        "name": "rdBalance",
+        "filename": "/home/pi/Documents/Bank/zumoBalance.txt",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 500,
+        "y": 220,
+        "wires": [
+            [
+                "540af4c6236ac97b"
+            ]
+        ]
+    },
+    {
+        "id": "540af4c6236ac97b",
+        "type": "function",
+        "z": "5c4628e039aefc51",
+        "name": "set glbl",
+        "func": "global.set(\"zumoBalance\",msg.payload);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2fe20529a028cc72",
+        "type": "delay",
+        "z": "5c4628e039aefc51",
+        "name": "Wait for file",
+        "pauseType": "delay",
+        "timeout": "0.5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 490,
+        "y": 260,
+        "wires": [
+            [
+                "4c502951911f604c"
+            ]
+        ]
+    },
+    {
+        "id": "525d8726aba10f0b",
+        "type": "switch",
+        "z": "5c4628e039aefc51",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "zumo/bank/currentBalance",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "zumo/bank/error",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 770,
+        "y": 260,
+        "wires": [
+            [
+                "56b082508f67e8c3"
+            ],
+            [
+                "6e096414ba6690ad"
+            ]
+        ]
+    },
+    {
+        "id": "56b082508f67e8c3",
+        "type": "file",
+        "z": "5c4628e039aefc51",
+        "name": "wrBalance",
+        "filename": "/home/pi/Documents/Bank/zumoBalance.txt",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 810,
+        "y": 220,
+        "wires": [
+            [
+                "b3585fed0f96ab06",
+                "6e096414ba6690ad"
+            ]
+        ]
+    },
+    {
+        "id": "b3585fed0f96ab06",
+        "type": "function",
+        "z": "5c4628e039aefc51",
+        "name": "calcTransAmount",
+        "func": "var oldBalance = global.get(\"zumoBalance\")\nvar newBalance = parseInt(msg.payload);\n\nvar transferAmount = oldBalance - newBalance;\nmsg.payload = transferAmount;\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 210,
+        "y": 340,
+        "wires": [
+            [
+                "66421c9807f2055a",
+                "c73391eaf26fda92"
+            ]
+        ]
+    },
+    {
+        "id": "c0b0076a28b37df2",
+        "type": "function",
+        "z": "5c4628e039aefc51",
+        "name": "calcNewBalance",
+        "func": "var currentBalance = global.get(\"chargerBalance\");\nvar transferAmount = parseInt(msg.payload);\n\nvar newBalance = +currentBalance + transferAmount;\nmsg.topic = \"charger/bank/currentBalance\";\nmsg.payload = newBalance;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 570,
+        "y": 360,
+        "wires": [
+            [
+                "7441106ccadc8f4e"
+            ]
+        ]
+    },
+    {
+        "id": "66421c9807f2055a",
+        "type": "file in",
+        "z": "5c4628e039aefc51",
+        "name": "rdBalance",
+        "filename": "/home/pi/Documents/Bank/chargerBalance.txt",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 400,
+        "y": 320,
+        "wires": [
+            [
+                "488903a41f106303"
+            ]
+        ]
+    },
+    {
+        "id": "488903a41f106303",
+        "type": "function",
+        "z": "5c4628e039aefc51",
+        "name": "set glbl",
+        "func": "global.set(\"chargerBalance\",msg.payload);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c73391eaf26fda92",
+        "type": "delay",
+        "z": "5c4628e039aefc51",
+        "name": "Wait for file",
+        "pauseType": "delay",
+        "timeout": "0.5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 390,
+        "y": 360,
+        "wires": [
+            [
+                "c0b0076a28b37df2"
+            ]
+        ]
+    },
+    {
+        "id": "7441106ccadc8f4e",
+        "type": "file",
+        "z": "5c4628e039aefc51",
+        "name": "wrBalance",
+        "filename": "/home/pi/Documents/Bank/chargerBalance.txt",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 750,
+        "y": 320,
+        "wires": [
+            [
+                "6e096414ba6690ad",
+                "cdaa4b27059a9f02"
+            ]
+        ]
+    },
+    {
+        "id": "834e0191ec50f153",
+        "type": "mqtt in",
+        "z": "5c4628e039aefc51",
+        "name": "",
+        "topic": "charger/bank/getBalance",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0cd1a8cc15bdd5f2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 540,
+        "wires": [
+            [
+                "91df74f9c89a8938"
+            ]
+        ]
+    },
+    {
+        "id": "d40f3aa3c31c0dfe",
+        "type": "mqtt out",
+        "z": "5c4628e039aefc51",
+        "name": "",
+        "topic": "charger/bank/currentBalance",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 700,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "91df74f9c89a8938",
+        "type": "switch",
+        "z": "5c4628e039aefc51",
+        "name": "Password check",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "4587",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 320,
+        "y": 540,
+        "wires": [
+            [
+                "94fbdf4f503da721"
+            ]
+        ]
+    },
+    {
+        "id": "94fbdf4f503da721",
+        "type": "file in",
+        "z": "5c4628e039aefc51",
+        "name": "readBalance",
+        "filename": "/home/pi/Documents/Bank/chargerBalance.txt",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 490,
+        "y": 540,
+        "wires": [
+            [
+                "d40f3aa3c31c0dfe",
+                "cdaa4b27059a9f02"
+            ]
+        ]
+    },
+    {
+        "id": "ecc14cb7114beee8",
+        "type": "mqtt in",
+        "z": "5c4628e039aefc51",
+        "name": "",
+        "topic": "zumo/bank/transfer/charger",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0cd1a8cc15bdd5f2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 260,
+        "wires": [
+            [
+                "87dfb671eedb9c6a"
+            ]
+        ]
+    },
+    {
+        "id": "6e096414ba6690ad",
+        "type": "mqtt out",
+        "z": "5c4628e039aefc51",
+        "name": "",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 950,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "906cf2ed95d1a202",
+        "type": "function",
+        "z": "5c4628e039aefc51",
+        "name": "calculate",
+        "func": "var currentAmount = global.get(\"zumoBalance\")\nvar deposit = msg.payload.amount;\nif (msg.payload.pin === 1337) \n{\n    currentAmount = +currentAmount + +deposit;\n    msg.payload = currentAmount;\n}\nelse\n{\n    msg.topic = \"error\";\n    msg.payload = \"Wrong pin!\"\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 140,
+        "wires": [
+            [
+                "bbdacf321c3976f3"
+            ]
+        ]
+    },
+    {
+        "id": "fa2d7335521c1e5c",
+        "type": "delay",
+        "z": "5c4628e039aefc51",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": ".5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 220,
+        "y": 140,
+        "wires": [
+            [
+                "906cf2ed95d1a202"
+            ]
+        ]
+    },
+    {
+        "id": "b945e3c58b015040",
+        "type": "file in",
+        "z": "5c4628e039aefc51",
+        "name": "rdBalance",
+        "filename": "/home/pi/Documents/Bank/zumoBalance.txt",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 220,
+        "y": 100,
+        "wires": [
+            [
+                "6011305e43d84762"
+            ]
+        ]
+    },
+    {
+        "id": "6011305e43d84762",
+        "type": "function",
+        "z": "5c4628e039aefc51",
+        "name": "set glbl",
+        "func": "global.set(\"zumoBalance\",msg.payload);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d6bd465b17418501",
+        "type": "ui_form",
+        "z": "5c4628e039aefc51",
+        "name": "Zumo",
+        "label": "",
+        "group": "0683e4e7ddd178b6",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Amount",
+                "value": "amount",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Pin",
+                "value": "pin",
+                "type": "number",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "amount": "",
+            "pin": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "zumo/bank/currentBalance",
+        "topicType": "str",
+        "splitLayout": "",
+        "className": "",
+        "x": 70,
+        "y": 100,
+        "wires": [
+            [
+                "fa2d7335521c1e5c",
+                "b945e3c58b015040"
+            ]
+        ]
+    },
+    {
+        "id": "bbdacf321c3976f3",
+        "type": "switch",
+        "z": "5c4628e039aefc51",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "zumo/bank/currentBalance",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "error",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 490,
+        "y": 120,
+        "wires": [
+            [
+                "428e7fd31aa8a3fd"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "8a264dfdbe02b650",
+        "type": "ui_text",
+        "z": "5c4628e039aefc51",
+        "group": "0683e4e7ddd178b6",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Balance: ",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 800,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "428e7fd31aa8a3fd",
+        "type": "file",
+        "z": "5c4628e039aefc51",
+        "name": "wrBalance",
+        "filename": "/home/pi/Documents/Bank/zumoBalance.txt",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 630,
+        "y": 100,
+        "wires": [
+            [
+                "6e096414ba6690ad",
+                "8a264dfdbe02b650"
+            ]
+        ]
+    },
+    {
+        "id": "8dabc4383fbad60f",
+        "type": "mqtt out",
+        "z": "5c4628e039aefc51",
+        "name": "",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 790,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "27d785f15194de67",
+        "type": "function",
+        "z": "5c4628e039aefc51",
+        "name": "calculate",
+        "func": "var currentAmount = global.get(\"chargerBalance\")\nvar deposit = msg.payload.amount;\nif (msg.payload.pin === 4587) \n{\n    currentAmount = +currentAmount + +deposit;\n    msg.payload = currentAmount;\n}\nelse\n{\n    msg.topic = \"error\";\n    msg.payload = \"Wrong pin!\"\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 640,
+        "wires": [
+            [
+                "55dda643dc216e6e"
+            ]
+        ]
+    },
+    {
+        "id": "09807aebf53564dd",
+        "type": "delay",
+        "z": "5c4628e039aefc51",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": ".5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 220,
+        "y": 640,
+        "wires": [
+            [
+                "27d785f15194de67"
+            ]
+        ]
+    },
+    {
+        "id": "8a1ad6583c1af865",
+        "type": "file in",
+        "z": "5c4628e039aefc51",
+        "name": "rdBalance",
+        "filename": "/home/pi/Documents/Bank/chargerBalance.txt",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 220,
+        "y": 600,
+        "wires": [
+            [
+                "0a3ffc70a08d3ef0"
+            ]
+        ]
+    },
+    {
+        "id": "0a3ffc70a08d3ef0",
+        "type": "function",
+        "z": "5c4628e039aefc51",
+        "name": "set glbl",
+        "func": "global.set(\"chargerBalance\",msg.payload);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0f74fbf07e7f41e6",
+        "type": "ui_form",
+        "z": "5c4628e039aefc51",
+        "name": "Charger",
+        "label": "",
+        "group": "fad49145facbd0f3",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Amount",
+                "value": "amount",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Pin",
+                "value": "pin",
+                "type": "number",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "amount": "",
+            "pin": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "zumo/bank/currentBalance",
+        "topicType": "str",
+        "splitLayout": "",
+        "className": "",
+        "x": 80,
+        "y": 640,
+        "wires": [
+            [
+                "09807aebf53564dd",
+                "8a1ad6583c1af865"
+            ]
+        ]
+    },
+    {
+        "id": "55dda643dc216e6e",
+        "type": "switch",
+        "z": "5c4628e039aefc51",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "charger/bank/currentBalance",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "error",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 490,
+        "y": 620,
+        "wires": [
+            [
+                "281fbe242059919b"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "cdaa4b27059a9f02",
+        "type": "ui_text",
+        "z": "5c4628e039aefc51",
+        "group": "fad49145facbd0f3",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Balance: ",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 740,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "281fbe242059919b",
+        "type": "file",
+        "z": "5c4628e039aefc51",
+        "name": "wrBalance",
+        "filename": "/home/pi/Documents/Bank/chargerBalance.txt",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 630,
+        "y": 600,
+        "wires": [
+            [
+                "8dabc4383fbad60f"
+            ]
+        ]
+    },
+    {
+        "id": "eac2264c2aee9984",
+        "type": "inject",
+        "z": "5c4628e039aefc51",
+        "name": "Inject 1000 into zumo account",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "zumo/bank/currentBalance",
+        "payload": "1000",
+        "payloadType": "num",
+        "x": 380,
+        "y": 400,
+        "wires": [
+            [
+                "56b082508f67e8c3"
+            ]
+        ]
+    },
+    {
+        "id": "6723a21f56817778",
+        "type": "inject",
+        "z": "5c4628e039aefc51",
+        "name": "Inject 0 into charger account",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "charger/bank/currentBalance",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 380,
+        "y": 440,
+        "wires": [
+            [
+                "7441106ccadc8f4e"
+            ]
+        ]
+    },
+    {
+        "id": "72ebf3d9030fc3eb",
+        "type": "ui_button",
+        "z": "5c4628e039aefc51",
+        "name": "",
+        "group": "84b2a051fc82585f",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Control",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "{\"amount\":100,\"pin\":1337}",
+        "payloadType": "json",
+        "topic": "zumo/bank/currentBalance",
+        "topicType": "str",
+        "x": 60,
+        "y": 140,
+        "wires": [
+            [
+                "fa2d7335521c1e5c",
+                "b945e3c58b015040",
+                "2aae9af78811c7b5"
+            ]
+        ]
+    },
+    {
+        "id": "2aae9af78811c7b5",
+        "type": "link out",
+        "z": "5c4628e039aefc51",
+        "name": "link out 1",
+        "mode": "link",
+        "links": [
+            "66e65f02ae461c3f"
+        ],
+        "x": 175,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "77d9e803d4aeb769",
+        "type": "mqtt in",
+        "z": "05c7087e739ed084",
+        "name": "",
+        "topic": "ir/sensor",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0cd1a8cc15bdd5f2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 280,
+        "wires": [
+            [
+                "24821ec9c7fc685e"
+            ]
+        ]
+    },
+    {
+        "id": "24821ec9c7fc685e",
+        "type": "ui_text",
+        "z": "05c7087e739ed084",
+        "group": "81a0f887f385f64d",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "IR-break",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 700,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "a2b58e52d7c9f918",
+        "type": "function",
+        "z": "05c7087e739ed084",
+        "name": "Adds seconds",
+        "func": "msg.payload/=1000\nmsg.payload+= \" seconds\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 220,
+        "wires": [
+            [
+                "fc1d29f6a037e189",
+                "f793dbfbfcd6bd57",
+                "9f4fae4d50a1fb55"
+            ]
+        ]
+    },
+    {
+        "id": "c75574dc5c0e0ffc",
+        "type": "mqtt in",
+        "z": "05c7087e739ed084",
+        "name": "",
+        "topic": "light/state",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0cd1a8cc15bdd5f2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 400,
+        "wires": [
+            [
+                "9c9c41df6ed8ee69"
+            ]
+        ]
+    },
+    {
+        "id": "bc0a31b3a1a59461",
+        "type": "mqtt out",
+        "z": "05c7087e739ed084",
+        "name": "",
+        "topic": "light/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 980,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "9c9c41df6ed8ee69",
+        "type": "ui_text",
+        "z": "05c7087e739ed084",
+        "group": "e7fa7a4da5b4f18b",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Light status",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 410,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "5883a7f17b08de99",
+        "type": "ui_switch",
+        "z": "05c7087e739ed084",
+        "name": "",
+        "label": "Light switch",
+        "tooltip": "",
+        "group": "e7fa7a4da5b4f18b",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "on",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "off",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 710,
+        "y": 400,
+        "wires": [
+            [
+                "bc0a31b3a1a59461"
+            ]
+        ]
+    },
+    {
+        "id": "93021e195ff3b99b",
+        "type": "mqtt in",
+        "z": "05c7087e739ed084",
+        "name": "",
+        "topic": "lap/time",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0cd1a8cc15bdd5f2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 220,
+        "wires": [
+            [
+                "a2b58e52d7c9f918",
+                "20a3310cab9c6f0b"
+            ]
+        ]
+    },
+    {
+        "id": "fc1d29f6a037e189",
+        "type": "ui_text",
+        "z": "05c7087e739ed084",
+        "group": "81a0f887f385f64d",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Lap time:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 700,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "62ddcaa60a511365",
+        "type": "mqtt in",
+        "z": "05c7087e739ed084",
+        "name": "",
+        "topic": "temp/state",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0cd1a8cc15bdd5f2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 460,
+        "wires": [
+            [
+                "249bfe3c8d9d20e3"
+            ]
+        ]
+    },
+    {
+        "id": "98444eb42eba6883",
+        "type": "ui_text",
+        "z": "05c7087e739ed084",
+        "group": "67bec9744356c2b0",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Temperature:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 710,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "249bfe3c8d9d20e3",
+        "type": "function",
+        "z": "05c7087e739ed084",
+        "name": "Adds celsius     ",
+        "func": "msg.payload += \" celsius\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 460,
+        "wires": [
+            [
+                "98444eb42eba6883",
+                "011e06210f23598f",
+                "f793dbfbfcd6bd57",
+                "d8083744b204c200"
+            ]
+        ]
+    },
+    {
+        "id": "011e06210f23598f",
+        "type": "function",
+        "z": "05c7087e739ed084",
+        "name": "Checks if 100",
+        "func": "if (msg.payload >= 100){\n    msg.payload = \"ON\"\n}else{\n    msg.payload = \"OFF\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 520,
+        "wires": [
+            [
+                "33df400b52d7bac3"
+            ]
+        ]
+    },
+    {
+        "id": "33df400b52d7bac3",
+        "type": "ui_text",
+        "z": "05c7087e739ed084",
+        "group": "67bec9744356c2b0",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Fire alarm",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 700,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "f793dbfbfcd6bd57",
+        "type": "ui_chart",
+        "z": "05c7087e739ed084",
+        "name": "",
+        "group": "2dbdd09a0bbd5b16",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "Sensor values",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "10",
+        "ymax": "60",
+        "removeOlder": "90",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 720,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9db6eafe7fd535bd",
+        "type": "mqtt in",
+        "z": "05c7087e739ed084",
+        "name": "",
+        "topic": "light/value",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0cd1a8cc15bdd5f2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 340,
+        "wires": [
+            [
+                "ea29290f1037dcf0",
+                "15ebf5d963347e46"
+            ]
+        ]
+    },
+    {
+        "id": "ea29290f1037dcf0",
+        "type": "function",
+        "z": "05c7087e739ed084",
+        "name": "Value change",
+        "func": "msg.payload/=100\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 340,
+        "wires": [
+            [
+                "f793dbfbfcd6bd57"
+            ]
+        ]
+    },
+    {
+        "id": "d8083744b204c200",
+        "type": "ui_chart",
+        "z": "05c7087e739ed084",
+        "name": "",
+        "group": "67bec9744356c2b0",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "Temperature",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "3",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 970,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "15ebf5d963347e46",
+        "type": "ui_chart",
+        "z": "05c7087e739ed084",
+        "name": "",
+        "group": "e7fa7a4da5b4f18b",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "Light value",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "3",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#ff9300",
+            "#aec7e8",
+            "#ff9300",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 970,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9f4fae4d50a1fb55",
+        "type": "ui_chart",
+        "z": "05c7087e739ed084",
+        "name": "",
+        "group": "81a0f887f385f64d",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "Lap time",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "3",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#aec7e8",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 960,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "20a3310cab9c6f0b",
+        "type": "function",
+        "z": "05c7087e739ed084",
+        "name": "changes to seconds ",
+        "func": "msg.payload/=1000\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 160,
+        "y": 160,
+        "wires": [
+            [
+                "2847a4094e57e2cb"
+            ]
+        ]
+    },
+    {
+        "id": "9b95e273842dfb8b",
+        "type": "ui_button",
+        "z": "05c7087e739ed084",
+        "name": "",
+        "group": "971e92cb1bd9d96f",
+        "order": 3,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Reset scoreboard ",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "topic": "payload",
+        "topicType": "msg",
+        "x": 410,
+        "y": 100,
+        "wires": [
+            [
+                "2847a4094e57e2cb"
+            ]
+        ]
+    },
+    {
+        "id": "2847a4094e57e2cb",
+        "type": "function",
+        "z": "05c7087e739ed084",
+        "name": "Scoreboard system",
+        "func": "// Retrieve the existing lap times array from flow context\nvar laps = flow.get(\"laps\") || [];\n\n// If the input signal is 0, reset the lap times array\nif (msg.payload === true) {\n    laps = [];\n    \n    flow.set(\"laps\") == 0;\n\n\n} else {\n    // Add each new lap time to the array\n    laps.push(msg.payload);\n\n    // Sort the array in ascending order\n    laps.sort(function (a, b) {\n        return a - b;\n    });\n\n    // Keep only the 5 fastest lap times\n    laps = laps.slice(0, 5);\n}\n\n// Store the updated array in flow context\nflow.set(\"laps\", laps);\n\n// Store the updated array in the message payload\nmsg.payload = laps;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 160,
+        "wires": [
+            [
+                "7113633e.e2f32c"
+            ]
+        ]
+    },
+    {
+        "id": "7113633e.e2f32c",
+        "type": "ui_template",
+        "z": "05c7087e739ed084",
+        "group": "971e92cb1bd9d96f",
+        "name": "Scoreboard",
+        "order": 1,
+        "width": 21,
+        "height": 5,
+        "format": "<style>\n    #scoreboard {\n        width: 100%;\n        height: 100%;\n        font-family: Arial, Helvetica, sans-serif;\n    }\n    \n    #scoreboard h2 {\n        text-align: center;\n        margin-top: 0;\n        margin-bottom: 20px;\n    }\n    \n    #scoreboard table {\n        width: 100%;\n    }\n    \n    #scoreboard th {\n        text-align: left;\n        font-weight: bold;\n        padding: 5px;\n        \n    }\n    \n    #scoreboard td {\n        padding: 5px;\n    }\n</style>\n\n<div id=\"scoreboard\">\n    <h2>Top 5 Lap Times</h2>\n    <table>\n        <tr>\n            <th>Rank</th>\n            <th>Time</th>\n        </tr>\n        <tr ng-repeat=\"lap in msg.payload\">\n            <td>{{ $index + 1 }}</td>\n            <td>{{ lap }}</td>\n        </tr>\n    </table>\n</div>\n",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 710,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "82d2bc5807c658e4",
+        "type": "ui_button",
+        "z": "0161344284cbe20f",
+        "name": "",
+        "group": "84b2a051fc82585f",
+        "order": 2,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "label": "Forward",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "forward",
+        "payloadType": "str",
+        "topic": "forward",
+        "topicType": "str",
+        "x": 220,
+        "y": 160,
+        "wires": [
+            [
+                "ab7b7564e5d994d2"
+            ]
+        ]
+    },
+    {
+        "id": "3cc13c6ef65b9ba0",
+        "type": "ui_button",
+        "z": "0161344284cbe20f",
+        "name": "",
+        "group": "84b2a051fc82585f",
+        "order": 3,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Left",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "left",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 90,
+        "y": 200,
+        "wires": [
+            [
+                "ab7b7564e5d994d2"
+            ]
+        ]
+    },
+    {
+        "id": "328a86775d5eb84d",
+        "type": "ui_button",
+        "z": "0161344284cbe20f",
+        "name": "",
+        "group": "84b2a051fc82585f",
+        "order": 4,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Right",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "right",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 330,
+        "y": 200,
+        "wires": [
+            [
+                "ab7b7564e5d994d2"
+            ]
+        ]
+    },
+    {
+        "id": "6ecdb6005b49acdb",
+        "type": "ui_button",
+        "z": "0161344284cbe20f",
+        "name": "",
+        "group": "84b2a051fc82585f",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Backward",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "backward",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 220,
+        "y": 240,
+        "wires": [
+            [
+                "ab7b7564e5d994d2"
+            ]
+        ]
+    },
+    {
+        "id": "ab7b7564e5d994d2",
+        "type": "mqtt out",
+        "z": "0161344284cbe20f",
+        "name": "",
+        "topic": "zumo/control/direction",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 580,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "a1b37ebc3beac119",
+        "type": "inject",
+        "z": "0161344284cbe20f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 360,
+        "y": 120,
+        "wires": [
+            [
+                "ab7b7564e5d994d2"
+            ]
+        ]
+    },
+    {
+        "id": "7c66c54e1d794ed7",
+        "type": "http response",
+        "z": "7ee658bf1d94bf8f",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 980,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "a532e9a6ea1270ce",
+        "type": "http in",
+        "z": "7ee658bf1d94bf8f",
+        "name": "",
+        "url": "/keyboard",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 180,
+        "y": 260,
+        "wires": [
+            [
+                "47c37a7a4e4d8dcb"
+            ]
+        ]
+    },
+    {
+        "id": "47c37a7a4e4d8dcb",
+        "type": "template",
+        "z": "7ee658bf1d94bf8f",
+        "name": "Nettside for å styre Zumo med tastatur",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "plain",
+        "template": "<html>\n\n<body>\n\n    <h1>Fjernstyr zumoen med knapper</h1>\n    <div id=\"log\"></div>\n\n    <script>\n        var socket = new WebSocket(`ws://${document.location.host}/ws/keyboard`);\n            \n            function log(msg) {\n                document.getElementById(\"log\").insertAdjacentHTML('afterbegin', `<li>${msg}</li>`);\n            }\n             \n            socket.onopen = function () {\n                log(\"Connection opened\");\n            };\n            socket.onerror = function (errorEvent) {\n                log(\"Error! Connection closed\");\n            };\n\n            const allowedKeys = ['w', 'a', 's', 'd'];                   //Tillater kun w,a,s,d\n            const keyMappings = {\n                'w': 'forward',\n                'a': 'left',\n                's': 'backward',\n                'd': 'right'\n            };\n            \n            document.addEventListener('keypress', function(evt) {\n                const pressedKey = evt.key.toLowerCase();\n                if (allowedKeys.includes(pressedKey)) {\n                    const direction = keyMappings[pressedKey];\n                    log(`${direction}`);\n                    socket.send(JSON.stringify({key: evt.key}));\n                }\n            });\n            \n             \n    </script>\n\n</body>\n\n</html>",
+        "output": "str",
+        "x": 670,
+        "y": 260,
+        "wires": [
+            [
+                "7c66c54e1d794ed7",
+                "68203e81c5ade9ba"
+            ]
+        ]
+    },
+    {
+        "id": "68203e81c5ade9ba",
+        "type": "function",
+        "z": "7ee658bf1d94bf8f",
+        "name": "Gjør om knappene til beskjeder",
+        "func": "const msgObj = JSON.parse(msg.payload);\nconst keyMappings = {\n    'w': 'forward',\n    'a': 'left',\n    's': 'backward',\n    'd': 'right'\n};\n\nconst pressedKey = msgObj.key.toLowerCase();\n\nif (keyMappings.hasOwnProperty(pressedKey)) {\n    msg.payload = keyMappings[pressedKey];\n    return msg;\n} else {\n    return null;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 320,
+        "wires": [
+            [
+                "df2c61fb0e7c032e"
+            ]
+        ]
+    },
+    {
+        "id": "167b63c5906f6192",
+        "type": "websocket in",
+        "z": "7ee658bf1d94bf8f",
+        "name": "",
+        "server": "15eb5b0d.fb9095",
+        "client": "",
+        "x": 190,
+        "y": 320,
+        "wires": [
+            [
+                "68203e81c5ade9ba"
+            ]
+        ]
+    },
+    {
+        "id": "df2c61fb0e7c032e",
+        "type": "mqtt out",
+        "z": "7ee658bf1d94bf8f",
+        "name": "",
+        "topic": "zumo/control/direction",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0cd1a8cc15bdd5f2",
+        "x": 1020,
+        "y": 320,
+        "wires": []
+    }
+]
